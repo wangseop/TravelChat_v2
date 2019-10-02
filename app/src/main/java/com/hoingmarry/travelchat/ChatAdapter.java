@@ -81,7 +81,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder>{
 
         mDataset.add(chat);
         notifyItemInserted(mDataset.size()-1);      // 갱신
-
     }
 
 }

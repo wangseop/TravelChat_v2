@@ -52,6 +52,7 @@ public class ChatActivity extends AppCompatActivity {
                     chat.setMessage(msg);
 
                     ((ChatAdapter)mAdapter).addChat(chat);
+//                    mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount() - 1);
                     // URL 설정.
                     String url = "http://192.168.0.154:5000/";
                     ContentValues contentValues = new ContentValues();
@@ -101,6 +102,7 @@ public class ChatActivity extends AppCompatActivity {
             this.values = values;
         }
 
+        // 비동기 송수신 부분
         @Override
         protected String doInBackground(Void... params){
             Log.d("Enter...", "doInBackground");
@@ -108,9 +110,11 @@ public class ChatActivity extends AppCompatActivity {
             RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
             result = requestHttpURLConnection.request(url, values); // 해당 URL로부터 결과물을 얻는다.
 
+            // 수신 받은 데이터 반환
             return result;
         }
 
+        // doInBackground 함수에서 받은 데이터로 로직 처리하는 부분
         @Override
         protected void onPostExecute(String s){
             super.onPostExecute(s);
@@ -127,6 +131,7 @@ public class ChatActivity extends AppCompatActivity {
                         , (String)(jsonObject.get("nickname")));
 
                 ((ChatAdapter)mAdapter).addChat(chat);
+                mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount() - 1);
 
 
             }
