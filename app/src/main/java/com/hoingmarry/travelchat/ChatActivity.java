@@ -5,12 +5,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -21,14 +23,16 @@ import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private List<ChatData> chatList;
     private String nick = "User";      // 단말기 닉네임
 
     private EditText EditText_chat;
-    private Button Button_send;
+    private ImageButton Button_send;
+
+    MessageAdapter messageAdapter;
+    List<Chat> mchat;
+    RecyclerView recyclerView;
+
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +51,9 @@ public class ChatActivity extends AppCompatActivity {
 
                 if (msg != null) {
                     // 사용자 입력 메세지 화면에 추가
-                    ChatData chat = new ChatData();
-                    chat.setNickname(nick);
-                    chat.setMessage(msg);
+                    Chat chat = new Chat(nick, "chatbot", msg);
 
-                    ((ChatAdapter)mAdapter).addChat(chat);
+                    ((MessageAdapter)messageAdapter).addChat(chat);
 //                    mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount() - 1);
                     // URL 설정.
                     String url = "http://192.168.0.154:5000/";
@@ -67,29 +69,21 @@ public class ChatActivity extends AppCompatActivity {
         });
 
 
+        recyclerView = findViewById(R.id.my_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
-        mRecyclerView = findViewById(R.id.my_recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
 
-
-        chatList = new ArrayList<>();
+        mchat = new ArrayList<>();
         Log.d("mAdapter", "mAdapter");
-        mAdapter = new ChatAdapter(chatList, ChatActivity.this, nick);
+        messageAdapter = new MessageAdapter(ChatActivity.this, mchat,"default", nick);
         // Write a message to the database
 
         // RecyclerView와 Adapter 연결
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(messageAdapter);
 
-
-
-        // 1. recyclerView - loop
-        // 2. db 내용 넣는다
-        // 3. 상대방 폰에 채팅 내용이 보임 - get
-
-        // 1-1. recyclerview - chat data
-        // 1. message, nickname, isMine - Data Transfer Object
     }
 
     public class NetworkTask extends AsyncTask<Void, Void, String> {
@@ -127,11 +121,11 @@ public class ChatActivity extends AppCompatActivity {
                 JSONObject jsonObject = (JSONObject)(jsonParser.parse(s));
                 Log.d("JSON", jsonObject.toString());
 
-                ChatData chat = new ChatData((String)(jsonObject.get("message"))
-                        , (String)(jsonObject.get("nickname")));
+                Chat chat = new Chat((String)(jsonObject.get("sender")),
+                         (String)(jsonObject.get("receiver")), (String)(jsonObject.get("message")));
 
-                ((ChatAdapter)mAdapter).addChat(chat);
-                mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount() - 1);
+                ((MessageAdapter)messageAdapter).addChat(chat);
+                recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
 
 
             }
