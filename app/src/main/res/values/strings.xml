@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TravelChat_v2</string>
+    <string name="popupGallery">Gallery</string>
 </resources>

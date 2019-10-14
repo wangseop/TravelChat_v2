@@ -1,13 +1,13 @@
-package com.hoingmarry.travelchat;
+package com.hoingmarry.travelchat.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+
+import com.hoingmarry.travelchat.R;
 
 
 public class MainActivity extends AppCompatActivity {

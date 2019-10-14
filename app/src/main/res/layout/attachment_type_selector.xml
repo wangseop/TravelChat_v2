@@ -24,12 +24,12 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <com.inscripts.cometchatpulse.demo.CustomView.CircleImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/gallery_button"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
-                    android:src="@drawable/"
-                    app:civ_circle_background_color="@color/popupGallery" />
+                    android:src="@drawable/ic_gallery_black"
+                    app:civ_circle_background_color="#FFFFFF" />
 
                 <TextView
                     style="@style/AttachmentTypeLabel"
@@ -45,11 +45,11 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <com.inscripts.cometchatpulse.demo.CustomView.CircleImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/close_button"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
-                    android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                    android:src="@drawable/ic_down_arrow_black"
                     app:civ_circle_background_color="#BDBDBD" />
 
                 <TextView

@@ -1,9 +1,9 @@
-package com.hoingmarry.travelchat;
+package com.hoingmarry.travelchat.chat;
 
 public class Chat {
-    private String sender;
-    private String receiver;
-    private String message;
+    protected String sender;
+    protected String receiver;
+    protected String message;
 
     public Chat(String sender, String receiver, String message) {
         this.sender = sender;
