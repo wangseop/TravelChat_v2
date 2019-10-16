@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">TravelChat_v2</string>
     <string name="popupGallery">Gallery</string>
+    <string name="messageSingleLeft">Default Message Single Left</string>
+    <string name="messageSingleRight">Default Message Single Right</string>
 </resources>

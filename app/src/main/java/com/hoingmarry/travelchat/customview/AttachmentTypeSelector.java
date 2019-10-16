@@ -33,7 +33,6 @@ import com.hoingmarry.travelchat.utils.AnimUtil;
 import com.hoingmarry.travelchat.utils.KeyboardVisibilityEvent;
 import com.hoingmarry.travelchat.utils.MediaUtils;
 import com.hoingmarry.travelchat.utils.ViewUtil;
-import static com.hoingmarry.travelchat.contracts.StringContract.RequestCode.ADD_GALLERY;
 
 public class AttachmentTypeSelector extends PopupWindow {
 
@@ -72,7 +71,7 @@ public class AttachmentTypeSelector extends PopupWindow {
         this.closeButton.setImageBitmap(MediaUtils.getPlaceholderImage(context, closeDrawable));
 
 
-        this.imageButton.setOnClickListener(new PropagatingClickListener(ADD_GALLERY));
+//        this.imageButton.setOnClickListener(new PropagatingClickListener(ADD_GALLERY));
 
         this.closeButton.setOnClickListener(new CloseClickListener());
 

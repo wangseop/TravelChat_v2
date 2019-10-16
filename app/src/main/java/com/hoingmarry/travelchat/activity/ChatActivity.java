@@ -20,10 +20,8 @@ import com.hoingmarry.travelchat.adapter.MessageAdapter;
 import com.hoingmarry.travelchat.chat.Chat;
 import com.hoingmarry.travelchat.R;
 import com.hoingmarry.travelchat.RequestHttpURLConnection;
-import com.hoingmarry.travelchat.chat.ChatDouble;
-import com.hoingmarry.travelchat.contracts.StringContract;
+import com.hoingmarry.travelchat.chat.ImageChat;
 import com.hoingmarry.travelchat.customview.AttachmentTypeSelector;
-import com.hoingmarry.travelchat.helper.CCPermissionHelper;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -31,6 +29,9 @@ import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.hoingmarry.travelchat.contracts.StringContract.MessageType.*;
+
 
 public class ChatActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -102,7 +103,15 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         Chat chat;
         if (msg != null) {
             // 사용자 입력 메세지 화면에 추가
-            chat = new Chat(nick, "chatbot", msg);
+//            chat = new Chat(MSG_RIGHT, nick, "chatbot", msg);
+            chat = new ImageChat(MSG_IMG_RIGHT, nick, "chatbot", msg,
+                    "https://helpx.adobe.com/content/dam/help/en/stock/how-to/visual-reverse-image-search/jcr_content/main-pars/image/visual-reverse-image-search-v2_intro.jpg");
+
+            // 개행 처리하는 코드(json에서 parsing 못하는 에러 방지)
+            // 받는쪽에서 \n -> n 으로 인식
+            msg = msg.replaceAll("\n", "\\n");
+            Log.d("Confirm chat", chat.getMessage());
+            Log.d("Confirm msg", msg);
 
             ((MessageAdapter)messageAdapter).addChat(chat);
 //                    mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount() - 1);
@@ -180,7 +189,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 JSONObject jsonObject = (JSONObject)(jsonParser.parse(s));
                 Log.d("JSON", jsonObject.toString());
 
-                Chat chat = new Chat((String)(jsonObject.get("sender")),
+                Chat chat = new Chat(MSG_LEFT, (String)(jsonObject.get("sender")),
                          (String)(jsonObject.get("receiver")), (String)(jsonObject.get("message")));
 
                 ((MessageAdapter)messageAdapter).addChat(chat);

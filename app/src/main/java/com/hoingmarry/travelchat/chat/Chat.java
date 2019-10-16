@@ -1,14 +1,24 @@
 package com.hoingmarry.travelchat.chat;
 
 public class Chat {
+    protected int msgType;
     protected String sender;
     protected String receiver;
     protected String message;
 
-    public Chat(String sender, String receiver, String message) {
+    public Chat(int msgType, String sender, String receiver, String message) {
+        this.msgType = msgType;
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
+    }
+
+    public int getMsgType() {
+        return msgType;
+    }
+
+    public void setMsgType(int msgType) {
+        this.msgType = msgType;
     }
 
     public String getSender() {

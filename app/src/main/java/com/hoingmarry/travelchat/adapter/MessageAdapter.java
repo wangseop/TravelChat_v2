@@ -5,24 +5,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.hoingmarry.travelchat.chat.Chat;
 import com.hoingmarry.travelchat.R;
-import com.hoingmarry.travelchat.chat.ChatDouble;
+import com.hoingmarry.travelchat.chat.ImageChat;
+import com.hoingmarry.travelchat.viewholder.MessageImageViewHolder;
 import com.hoingmarry.travelchat.viewholder.MessageViewHolder;
-import com.hoingmarry.travelchat.viewholder.TestViewHolder;
 
 import java.util.List;
 
+import static com.hoingmarry.travelchat.contracts.StringContract.MessageType.*;
+
 public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    public static final int MSG_TYPE_LEFT = 0;
-    public static final int MSG_TYPE_RIGHT = 1;
+
     private Context mContext;
     private List<Chat> mChat;
     private String imageurl;
@@ -42,13 +41,15 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         // viewType에 따라 생성할 layout, holder 선택
         switch(viewType)
         {
-            case MSG_TYPE_RIGHT: {
-                View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_right, parent, false);
-                viewHolder = new MessageViewHolder(view);
+            case MSG_RIGHT: {
+//                View view = LayoutInflater.from(mContext).inflate(R.layout.message_single_layout_right, parent, false);
+//                viewHolder = new MessageViewHolder(view);
+                View view = LayoutInflater.from(mContext).inflate(R.layout.message_image_layout_right, parent, false);
+                viewHolder = new MessageImageViewHolder(view);
             }break;
 
-            case MSG_TYPE_LEFT: {
-                View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_left, parent, false);
+            case MSG_LEFT: {
+                View view = LayoutInflater.from(mContext).inflate(R.layout.message_single_layout_left, parent, false);
                 viewHolder = new MessageViewHolder(view);
             }break;
         }
@@ -60,13 +61,23 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         Log.d("Enter", "onBindViewHolder");
         Log.d("Holder", Integer.toString(holder.getItemViewType()));
         Chat chat = mChat.get(position);
-        ((MessageViewHolder)holder).show_message.setText(chat.getMessage());
-
+//        ((MessageViewHolder)holder).show_message.setText(chat.getMessage());
+//        ((MessageViewHolder)holder).nick.setText(chat.getSender());
         switch(holder.getItemViewType())
         {
-            // chatbot의 채팅 내용에만 profile 이미지 추가
-           case MSG_TYPE_LEFT:
+
+            case MSG_RIGHT:
             {
+                String url = "https://helpx.adobe.com/content/dam/help/en/stock/how-to/visual-reverse-image-search/jcr_content/main-pars/image/visual-reverse-image-search-v2_intro.jpg";
+                ((MessageImageViewHolder)holder).show_message.setText(chat.getMessage());
+                ((MessageImageViewHolder)holder).nick.setText(chat.getSender());
+                Glide.with(mContext).load(url).into(((MessageImageViewHolder)holder).show_image);
+            }break;
+                // chatbot의 채팅 내용에만 profile 이미지 추가
+           case MSG_LEFT:
+            {
+                ((MessageViewHolder)holder).show_message.setText(chat.getMessage());
+                ((MessageViewHolder)holder).nick.setText(chat.getSender());
                 if(imageurl.equals("default")){
                     ((MessageViewHolder)holder).profile_image.setImageResource(R.mipmap.ic_launcher);
 
@@ -92,10 +103,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         // return 값이 추가하는 holder의 type 결정해준다.
         Log.d("Enter", "GetItemViewType");
         if(mChat.get(position).getSender().equals(this.myNickName)){
-            return MSG_TYPE_RIGHT;
+            return MSG_RIGHT;
         }
         else{
-            return MSG_TYPE_LEFT;
+            return MSG_LEFT;
         }
     }
     public void addChat(Chat chat){
