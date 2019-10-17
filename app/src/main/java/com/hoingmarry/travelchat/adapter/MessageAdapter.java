@@ -42,16 +42,18 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         switch(viewType)
         {
             case MSG_RIGHT: {
-//                View view = LayoutInflater.from(mContext).inflate(R.layout.message_single_layout_right, parent, false);
-//                viewHolder = new MessageViewHolder(view);
-                View view = LayoutInflater.from(mContext).inflate(R.layout.message_image_layout_right, parent, false);
-                viewHolder = new MessageImageViewHolder(view);
+                View view = LayoutInflater.from(mContext).inflate(R.layout.message_single_layout_right, parent, false);
+                viewHolder = new MessageViewHolder(view);
             }break;
 
             case MSG_LEFT: {
                 View view = LayoutInflater.from(mContext).inflate(R.layout.message_single_layout_left, parent, false);
                 viewHolder = new MessageViewHolder(view);
             }break;
+            case MSG_IMG_LEFT:{
+                View view = LayoutInflater.from(mContext).inflate(R.layout.message_image_layout_left, parent, false);
+                viewHolder = new MessageImageViewHolder(view);
+            }
         }
         return viewHolder;
     }
@@ -66,15 +68,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         switch(holder.getItemViewType())
         {
 
-            case MSG_RIGHT:
-            {
-                String url = "https://helpx.adobe.com/content/dam/help/en/stock/how-to/visual-reverse-image-search/jcr_content/main-pars/image/visual-reverse-image-search-v2_intro.jpg";
-                ((MessageImageViewHolder)holder).show_message.setText(chat.getMessage());
-                ((MessageImageViewHolder)holder).nick.setText(chat.getSender());
-                Glide.with(mContext).load(url).into(((MessageImageViewHolder)holder).show_image);
-            }break;
-                // chatbot의 채팅 내용에만 profile 이미지 추가
-           case MSG_LEFT:
+            case MSG_LEFT:
             {
                 ((MessageViewHolder)holder).show_message.setText(chat.getMessage());
                 ((MessageViewHolder)holder).nick.setText(chat.getSender());
@@ -84,6 +78,26 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }else{
                     Glide.with(mContext).load(imageurl).into(((MessageViewHolder)holder).profile_image);
                 }
+            }break;
+            case MSG_RIGHT:
+            {
+                ((MessageViewHolder)holder).show_message.setText(chat.getMessage());
+                ((MessageViewHolder)holder).nick.setText(chat.getSender());
+            }break;
+                // chatbot의 채팅 내용에만 profile 이미지 추가
+            case MSG_IMG_LEFT:
+            {
+                ((MessageImageViewHolder)holder).show_message.setText(chat.getMessage());
+                ((MessageImageViewHolder)holder).nick.setText(chat.getSender());
+                if(imageurl.equals("default")){
+                    ((MessageImageViewHolder)holder).profile_image.setImageResource(R.mipmap.ic_launcher);
+
+                }else{
+                    Glide.with(mContext).load(imageurl).into(((MessageImageViewHolder)holder).profile_image);
+                }
+                Glide.with(mContext).load(((ImageChat)chat).getImageUrl()).
+                        into(((MessageImageViewHolder)holder).show_image);
+
             }break;
             default:
                 break;
@@ -102,12 +116,16 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public int getItemViewType(int position) {
         // return 값이 추가하는 holder의 type 결정해준다.
         Log.d("Enter", "GetItemViewType");
-        if(mChat.get(position).getSender().equals(this.myNickName)){
-            return MSG_RIGHT;
-        }
-        else{
-            return MSG_LEFT;
-        }
+
+        int type = mChat.get(position).getMsgType();
+
+        return type;
+//        if(mChat.get(position).getSender().equals(this.myNickName)){
+//            return MSG_RIGHT;
+//        }
+//        else{
+//            return MSG_LEFT;
+//        }
     }
     public void addChat(Chat chat){
         Log.d("Enter", "addChat");

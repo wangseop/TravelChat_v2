@@ -81,6 +81,18 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         // RecyclerView와 Adapter 연결
         recyclerView.setAdapter(messageAdapter);
 
+        // Hello Message event 처리
+        String url = "http://192.168.0.154:5000/hello";
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name",nick);
+        contentValues.put("msg","hello");
+        // 입력 내용 비우기
+        EditText_chat.setText("");
+
+        // AsyncTask를 통해 HttpURLConnection 수행.
+        ChatActivity.NetworkTask networkTask = new ChatActivity.NetworkTask(url, contentValues);
+        networkTask.execute();
+        //
     }
 
     // 클릭 리스너 재정의
@@ -103,10 +115,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         Chat chat;
         if (msg != null) {
             // 사용자 입력 메세지 화면에 추가
-//            chat = new Chat(MSG_RIGHT, nick, "chatbot", msg);
-            chat = new ImageChat(MSG_IMG_RIGHT, nick, "chatbot", msg,
-                    "https://helpx.adobe.com/content/dam/help/en/stock/how-to/visual-reverse-image-search/jcr_content/main-pars/image/visual-reverse-image-search-v2_intro.jpg");
-
+            chat = new Chat(MSG_RIGHT, nick, "chatbot", msg);
             // 개행 처리하는 코드(json에서 parsing 못하는 에러 방지)
             // 받는쪽에서 \n -> n 으로 인식
             msg = msg.replaceAll("\n", "\\n");
@@ -116,7 +125,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             ((MessageAdapter)messageAdapter).addChat(chat);
 //                    mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount() - 1);
             // URL 설정.
-            String url = "http://192.168.0.154:5000/seq2seq";
+//            String url = "http://192.168.0.154:5000/seq2seq";
+            String url = "http://192.168.0.154:5000/msgimage";
             ContentValues contentValues = new ContentValues();
             contentValues.put("name",nick);
             contentValues.put("msg",msg);
@@ -189,8 +199,19 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 JSONObject jsonObject = (JSONObject)(jsonParser.parse(s));
                 Log.d("JSON", jsonObject.toString());
 
-                Chat chat = new Chat(MSG_LEFT, (String)(jsonObject.get("sender")),
-                         (String)(jsonObject.get("receiver")), (String)(jsonObject.get("message")));
+                Chat chat = null;
+                if (jsonObject.get("imageurl") == null)
+                {
+                    chat = new Chat(MSG_LEFT, (String)(jsonObject.get("sender")),
+                            (String)(jsonObject.get("receiver")), (String)(jsonObject.get("message")));
+                }
+                else
+                {
+                    chat = new ImageChat(MSG_IMG_LEFT, (String)(jsonObject.get("sender")),
+                            (String)(jsonObject.get("receiver")), (String)(jsonObject.get("message")),
+                            (String)(jsonObject.get("imageurl")));
+                }
+
 
                 ((MessageAdapter)messageAdapter).addChat(chat);
                 recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
