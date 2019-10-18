@@ -394,7 +394,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
                             ((MessageAdapter) messageAdapter).addChat(chat);
                             recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
-
+                            imagesSelected = false;
 //                            Toast.makeText(getApplicationContext(),
 //                                    "Server's Response\n" + response.body().string(), Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
