@@ -127,7 +127,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         String url = "http://192.168.0.154:5000/hello";
         ContentValues contentValues = new ContentValues();
         contentValues.put("name",nick);
-        contentValues.put("msg","hello");
+        contentValues.put("msg","welcom");
         // 입력 내용 비우기
         EditText_chat.setText("");
 
@@ -383,25 +383,29 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
                 // In order to access the TextView inside the UI thread, the code is executed inside runOnUiThread()
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            // 응답 성공시
-                            Chat chat = null;
-                            chat = new Chat(MSG_LEFT, "chatbot",
-                                    nick, response.body().string());
+                try {
+                    String res = response.body().string();
+                    // 응답 성공시
+                    Chat chat = null;
+                    JSONParser jsonParser = new JSONParser();
+                    JSONObject jsonObject = (JSONObject)jsonParser.parse(res);
+//
+                    chat = new Chat(MSG_LEFT, (String)jsonObject.get("sender")
+                            , (String)jsonObject.get("receiver"),
+                            (String)jsonObject.get("message"));
 
-                            ((MessageAdapter) messageAdapter).addChat(chat);
-                            recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
-                            imagesSelected = false;
+
+                    ((MessageAdapter) messageAdapter).addChat(chat);
+                    recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
+                    imagesSelected = false;
 //                            Toast.makeText(getApplicationContext(),
 //                                    "Server's Response\n" + response.body().string(), Toast.LENGTH_SHORT).show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                catch(ParseException e){
+                    e.printStackTrace();
+                }
             }
         });
     }
