@@ -1,7 +1,10 @@
 package com.hoingmarry.travelchat.adapter;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import android.content.Context;
 import android.util.Log;
+import android.view.FrameMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,25 +16,36 @@ import com.hoingmarry.travelchat.chat.Chat;
 import com.hoingmarry.travelchat.R;
 import com.hoingmarry.travelchat.chat.ImageChat;
 import com.hoingmarry.travelchat.viewholder.MessageImageViewHolder;
+import com.hoingmarry.travelchat.viewholder.MessageMapViewHolder;
 import com.hoingmarry.travelchat.viewholder.MessageViewHolder;
+import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraUpdate;
+import com.naver.maps.map.MapFragment;
+import com.naver.maps.map.MapView;
+import com.naver.maps.map.NaverMap;
+import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.overlay.LocationOverlay;
 
 import java.util.List;
 
 import static com.hoingmarry.travelchat.contracts.StringContract.MessageType.*;
 
-public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OnMapReadyCallback {
 
 
     private Context mContext;
     private List<Chat> mChat;
     private String imageurl;
     private String myNickName;
+    private List<MapView> mapList;
 
-    public MessageAdapter(Context mContext, List<Chat> mChat, String imageurl, String myNickName){
+    public MessageAdapter(Context mContext, List<Chat> mChat, String imageurl, String myNickName
+                    , List<MapView> mapList){
         this.mChat = mChat;
         this.mContext = mContext;
         this.imageurl = imageurl;
         this.myNickName = myNickName;
+        this.mapList = mapList;
     }
 
     @Override
@@ -47,8 +61,13 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }break;
 
             case MSG_LEFT: {
-                View view = LayoutInflater.from(mContext).inflate(R.layout.message_single_layout_left, parent, false);
-                viewHolder = new MessageViewHolder(view);
+//                View view = LayoutInflater.from(mContext).inflate(R.layout.message_single_layout_left, parent, false);
+//                viewHolder = new MessageViewHolder(view);
+                View view = LayoutInflater.from(mContext).inflate(R.layout.message_map_layout_left, parent, false);
+                viewHolder = new MessageMapViewHolder(view);
+                mapList.add(((MessageMapViewHolder)viewHolder).mapView);
+
+
             }break;
             case MSG_IMG_LEFT:{
                 View view = LayoutInflater.from(mContext).inflate(R.layout.message_image_layout_left, parent, false);
@@ -70,13 +89,14 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             case MSG_LEFT:
             {
-                ((MessageViewHolder)holder).show_message.setText(chat.getMessage());
-                ((MessageViewHolder)holder).nick.setText(chat.getSender());
+                ((MessageMapViewHolder)holder).show_message.setText(chat.getMessage());
+                ((MessageMapViewHolder)holder).nick.setText(chat.getSender());
+                ((MessageMapViewHolder)holder).mapView.getMapAsync(this);
                 if(imageurl.equals("default")){
-                    ((MessageViewHolder)holder).profile_image.setImageResource(R.mipmap.ic_launcher);
+                    ((MessageMapViewHolder)holder).profile_image.setImageResource(R.drawable.tan);
 
                 }else{
-                    Glide.with(mContext).load(imageurl).into(((MessageViewHolder)holder).profile_image);
+                    Glide.with(mContext).load(imageurl).into(((MessageMapViewHolder)holder).profile_image);
                 }
             }break;
             case MSG_RIGHT:
@@ -90,7 +110,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ((MessageImageViewHolder)holder).show_message.setText(chat.getMessage());
                 ((MessageImageViewHolder)holder).nick.setText(chat.getSender());
                 if(imageurl.equals("default")){
-                    ((MessageImageViewHolder)holder).profile_image.setImageResource(R.mipmap.ic_launcher);
+                    ((MessageImageViewHolder)holder).profile_image.setImageResource(R.drawable.tan);
 
                 }else{
                     Glide.with(mContext).load(imageurl).into(((MessageImageViewHolder)holder).profile_image);
@@ -134,4 +154,13 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         notifyItemInserted(mChat.size()-1);      // 갱신
     }
 
+    @Override
+    public void onMapReady(@NonNull NaverMap naverMap) {
+        LocationOverlay locationOverlay = naverMap.getLocationOverlay();
+        locationOverlay.setVisible(true);
+        CameraUpdate cameraUpdate = CameraUpdate.scrollTo(
+                new LatLng(37.563996959956604, 127.11477513394202));
+        naverMap.moveCamera(cameraUpdate);
+        locationOverlay.setPosition(new LatLng(37.563996959956604, 127.11477513394202));
+    }
 }

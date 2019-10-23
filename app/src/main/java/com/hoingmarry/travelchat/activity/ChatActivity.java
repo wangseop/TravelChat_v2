@@ -3,6 +3,7 @@ package com.hoingmarry.travelchat.activity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,7 +36,9 @@ import com.hoingmarry.travelchat.chat.Chat;
 import com.hoingmarry.travelchat.R;
 import com.hoingmarry.travelchat.RequestHttpURLConnection;
 import com.hoingmarry.travelchat.chat.ImageChat;
+import com.hoingmarry.travelchat.chat.MapChat;
 import com.hoingmarry.travelchat.customview.AttachmentTypeSelector;
+import com.naver.maps.map.MapView;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -66,10 +69,11 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
     private String nick = "User";      // 단말기 닉네임
 
+    public ChatActivity chatActivity;
     private ImageButton button_attach;
     private EditText EditText_chat;
     private ImageButton Button_send;
-
+    private List<MapView> mapList;
 
     MessageAdapter messageAdapter;
     List<Chat> mchat;
@@ -101,6 +105,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         button_attach = findViewById(R.id.button_attach);
         Button_send = findViewById(R.id.button_send);
         EditText_chat = findViewById(R.id.editText_chat);
+        chatActivity = this;
 
         // button 리스너 추가
         button_attach.setOnClickListener(this);
@@ -117,23 +122,30 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         // 대화리스트 초기화
         mchat = new ArrayList<>();
         Log.d("mAdapter", "mAdapter");
-        messageAdapter = new MessageAdapter(ChatActivity.this, mchat,"default", nick);
+
+        // MapFragment 표현
+        mapList = new ArrayList<MapView>();
+
+        //  MessageAdapter 설정
+        messageAdapter = new MessageAdapter(
+                ChatActivity.this, mchat,"default", nick, mapList);
         // Write a message to the database
 
         // RecyclerView와 Adapter 연결
         recyclerView.setAdapter(messageAdapter);
 
-        // Hello Message event 처리
-        String url = "http://192.168.0.154:5000/hello";
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("name",nick);
-        contentValues.put("msg","welcom");
-        // 입력 내용 비우기
-        EditText_chat.setText("");
 
-        // AsyncTask를 통해 HttpURLConnection 수행.
-        ChatActivity.NetworkTask networkTask = new ChatActivity.NetworkTask(url, contentValues);
-        networkTask.execute();
+//        // Hello Message event 처리
+//        String url = "http://192.168.0.154:5000/hello";
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put("name",nick);
+//        contentValues.put("msg","welcom");
+//        // 입력 내용 비우기
+//        EditText_chat.setText("");
+//
+//        // AsyncTask를 통해 HttpURLConnection 수행.
+//        ChatActivity.NetworkTask networkTask = new ChatActivity.NetworkTask(url, contentValues);
+//        networkTask.execute();
         //
     }
 
@@ -265,13 +277,19 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d("JSON", jsonObject.toString());
 
                 Chat chat = null;
-                if (jsonObject.get("imageurl") == null) {
-                    chat = new Chat(MSG_LEFT, (String) (jsonObject.get("sender")),
-                            (String) (jsonObject.get("receiver")), (String) (jsonObject.get("message")));
-                } else {
+                if (jsonObject.get("imageurl") != null) {
                     chat = new ImageChat(MSG_IMG_LEFT, (String) (jsonObject.get("sender")),
                             (String) (jsonObject.get("receiver")), (String) (jsonObject.get("message")),
                             (String) (jsonObject.get("imageurl")));
+
+                }else if(jsonObject.get("latitude") != null && jsonObject.get("longitude") != null){
+                    chat = new MapChat(MSG_IMG_LEFT, (String) (jsonObject.get("sender")),
+                            (String) (jsonObject.get("receiver")), (String) (jsonObject.get("message")),
+                            (Double)(jsonObject.get("latitude")), (Double)(jsonObject.get("longitude")));
+                }
+                else {
+                    chat = new Chat(MSG_LEFT, (String) (jsonObject.get("sender")),
+                            (String) (jsonObject.get("receiver")), (String) (jsonObject.get("message")));
                 }
 
 
@@ -563,5 +581,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
+
 
 }
