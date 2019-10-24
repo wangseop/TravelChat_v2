@@ -36,6 +36,7 @@ import com.hoingmarry.travelchat.chat.Chat;
 import com.hoingmarry.travelchat.R;
 import com.hoingmarry.travelchat.RequestHttpURLConnection;
 import com.hoingmarry.travelchat.chat.ImageChat;
+import com.hoingmarry.travelchat.chat.ImageThumnChat;
 import com.hoingmarry.travelchat.chat.MapChat;
 import com.hoingmarry.travelchat.customview.AttachmentTypeSelector;
 import com.naver.maps.map.MapView;
@@ -74,7 +75,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton Button_send;
 
     private final String welcomePath = "http://192.168.0.154:5000/hello";
-    private final String messagePath = "http://192.168.0.154:5000/seq2seq";
+    private final String messagePath = "http://192.168.0.154:5000/msgimage";
     private String messageImgPath = "http://192.168.0.154:5000/img";
     MessageAdapter messageAdapter;
     List<Chat> mchat;
@@ -264,9 +265,12 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
                 Chat chat = null;
                 if (jsonObject.get("imageurl") != null) {
-                    chat = new ImageChat(MSG_IMG_LEFT, (String) (jsonObject.get("sender")),
+//                    chat = new ImageChat(MSG_IMG_LEFT, (String) (jsonObject.get("sender")),
+//                            (String) (jsonObject.get("receiver")), (String) (jsonObject.get("message")),
+//                            (String) (jsonObject.get("imageurl")));
+                    chat = new ImageThumnChat(MSG_IMG_THUMB_LEFT, (String) (jsonObject.get("sender")),
                             (String) (jsonObject.get("receiver")), (String) (jsonObject.get("message")),
-                            (String) (jsonObject.get("imageurl")));
+                            (String) (jsonObject.get("imageurl")), (String) (jsonObject.get("message")));
 
                 }else if(jsonObject.get("latitude") != null && jsonObject.get("longitude") != null){
                     chat = new MapChat(MSG_MAP_LEFT, (String) (jsonObject.get("sender")),

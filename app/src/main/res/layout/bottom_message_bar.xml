@@ -1,31 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:weightSum="1">
-
-    <ImageButton
-        android:id="@+id/button_attach"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:background="@android:color/transparent"
-        android:padding="5dp"
-        android:src="@drawable/ic_attachment"/>
-    <EditText
-        android:id="@+id/editText_chat"
-        android:hint="Message를 입력하세요"
+    android:weightSum="2">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/fore_1"
+            android:layout_margin="10dp"
+            android:scaleType="fitStart"/>
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight='1'/>
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/button_attach"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:padding="5dp"
+            android:src="@drawable/ic_attachment"/>
+        <EditText
+            android:id="@+id/editText_chat"
+            android:hint="Message를 입력하세요"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight='1'/>
 
-    <ImageButton
-        android:id="@+id/button_send"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:background="@drawable/ic_action_name"
-        android:text="SEND" />
+        <ImageButton
+            android:id="@+id/button_send"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_action_name"
+            android:text="SEND" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

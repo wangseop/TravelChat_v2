@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +18,8 @@ import com.hoingmarry.travelchat.activity.MapSearchActivity;
 import com.hoingmarry.travelchat.chat.Chat;
 import com.hoingmarry.travelchat.R;
 import com.hoingmarry.travelchat.chat.ImageChat;
+import com.hoingmarry.travelchat.chat.ImageThumnChat;
+import com.hoingmarry.travelchat.viewholder.MessageImageThumbViewHolder;
 import com.hoingmarry.travelchat.viewholder.MessageImageViewHolder;
 import com.hoingmarry.travelchat.viewholder.MessageMapViewHolder;
 import com.hoingmarry.travelchat.viewholder.MessageViewHolder;
@@ -68,6 +72,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 View view = LayoutInflater.from(mContext).inflate(R.layout.message_image_layout_left, parent, false);
                 viewHolder = new MessageImageViewHolder(view);
             }break;
+            case MSG_IMG_THUMB_LEFT:{
+                View view = LayoutInflater.from(mContext).inflate(R.layout.message_imagethumb_layout_left, parent, false);
+                viewHolder = new MessageImageThumbViewHolder(view);
+            }break;
             case MSG_MAP_LEFT: {
 //                View view = LayoutInflater.from(mContext).inflate(R.layout.message_single_layout_left, parent, false);
 //                viewHolder = new MessageViewHolder(view);
@@ -119,6 +127,35 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
                 Glide.with(mContext).load(((ImageChat)chat).getImageUrl()).
                         into(((MessageImageViewHolder)holder).show_image);
+                GradientDrawable drawable=
+                        (GradientDrawable)mContext.getDrawable(R.drawable.thumbnail_rounding);
+                ((MessageImageViewHolder)holder).show_image.setBackground(drawable);
+                ((MessageImageViewHolder)holder).show_image.setClipToOutline(true);
+
+
+            }break;
+            case MSG_IMG_THUMB_LEFT:
+            {
+                ((MessageImageThumbViewHolder)holder).show_message.setText(chat.getMessage());
+                ((MessageImageThumbViewHolder)holder).nick.setText(chat.getSender());
+
+                if(imageurl.equals("default")){
+                    ((MessageImageThumbViewHolder)holder).profile_image.setImageResource(R.drawable.tan);
+
+                }else{
+                    Glide.with(mContext).load(imageurl).into(((MessageImageThumbViewHolder)holder).profile_image);
+                }
+
+                Glide.with(mContext).load(((ImageChat)chat).getImageUrl()).
+                        into(((MessageImageThumbViewHolder)holder).show_image);
+//                GradientDrawable drawable=
+//                        (GradientDrawable)mContext.getDrawable(R.drawable.thumbnail_rounding);
+//                ((MessageImageThumbViewHolder)holder).show_image.setBackground(drawable);
+                ((LinearLayout)((MessageImageThumbViewHolder)holder).show_image.getParent()).setClipToOutline(true);
+
+                // 이미지 코멘트
+                ((MessageImageThumbViewHolder)holder).showImageComment.setText(((ImageThumnChat)chat).getImageComment());
+
 
             }break;
             case MSG_MAP_LEFT:
