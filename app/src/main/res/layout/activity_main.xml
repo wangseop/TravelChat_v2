@@ -9,11 +9,11 @@
 <!--        android:layout_height="match_parent"-->
 <!--        android:id="@+id/map"-->
 <!--        android:name="com.naver.maps.map.MapFragment" />-->
-    <TextView
-        android:id="@+id/tv_output"
+    <Button
+        android:id="@+id/btn_map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="출력 공간"
+        android:text="지도 활성화"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

@@ -69,18 +69,17 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
     private String nick = "User";      // 단말기 닉네임
 
-    public ChatActivity chatActivity;
     private ImageButton button_attach;
     private EditText EditText_chat;
     private ImageButton Button_send;
-    private List<MapView> mapList;
 
+    private final String welcomePath = "http://192.168.0.154:5000/hello";
+    private final String messagePath = "http://192.168.0.154:5000/seq2seq";
+    private String messageImgPath = "http://192.168.0.154:5000/img";
     MessageAdapter messageAdapter;
     List<Chat> mchat;
     RecyclerView recyclerView;
-    Intent intent;
 
-    AttachmentTypeSelector attachmentTypeSelector;
 
     private static final Pattern IP_ADDRESS
             = Pattern.compile(
@@ -105,7 +104,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         button_attach = findViewById(R.id.button_attach);
         Button_send = findViewById(R.id.button_send);
         EditText_chat = findViewById(R.id.editText_chat);
-        chatActivity = this;
 
         // button 리스너 추가
         button_attach.setOnClickListener(this);
@@ -123,12 +121,11 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         mchat = new ArrayList<>();
         Log.d("mAdapter", "mAdapter");
 
-        // MapFragment 표현
-        mapList = new ArrayList<MapView>();
+
 
         //  MessageAdapter 설정
         messageAdapter = new MessageAdapter(
-                ChatActivity.this, mchat,"default", nick, mapList);
+                ChatActivity.this, mchat,"default", nick);
         // Write a message to the database
 
         // RecyclerView와 Adapter 연결
@@ -136,17 +133,54 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
 
 //        // Hello Message event 처리
-//        String url = "http://192.168.0.154:5000/hello";
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put("name",nick);
-//        contentValues.put("msg","welcom");
-//        // 입력 내용 비우기
-//        EditText_chat.setText("");
-//
-//        // AsyncTask를 통해 HttpURLConnection 수행.
-//        ChatActivity.NetworkTask networkTask = new ChatActivity.NetworkTask(url, contentValues);
-//        networkTask.execute();
+        String url = welcomePath;
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name",nick);
+        contentValues.put("msg","welcom");
+        // 입력 내용 비우기
+        EditText_chat.setText("");
+
+        // AsyncTask를 통해 HttpURLConnection 수행.
+        ChatActivity.NetworkTask networkTask = new ChatActivity.NetworkTask(url, contentValues);
+        networkTask.execute();
         //
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+
     }
 
     // 클릭 리스너 재정의
@@ -181,7 +215,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             ((MessageAdapter)messageAdapter).addChat(chat);
 //                    mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount() - 1);
             // URL 설정.
-            String url = "http://192.168.0.154:5000/seq2seq";
+            String url = messagePath;
             ContentValues contentValues = new ContentValues();
             contentValues.put("name",nick);
             contentValues.put("msg",msg);
@@ -193,54 +227,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             networkTask.execute();
         }
     }
-    private void uploadImage() {
-        String msg = EditText_chat.getText().toString();    // msg
-        Chat chat;
-        if (msg != null) {
-            // 사용자 입력 메세지 화면에 추가
-            chat = new Chat(MSG_RIGHT, nick, "chatbot", msg);
-            // 개행 처리하는 코드(json에서 parsing 못하는 에러 방지)
-            // 받는쪽에서 \n -> n 으로 인식
-            msg = msg.replaceAll("\n", "\\n");
-            Log.d("Confirm chat", chat.getMessage());
-            Log.d("Confirm msg", msg);
-
-            ((MessageAdapter) messageAdapter).addChat(chat);
-//                    mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount() - 1);
-            // URL 설정.
-//            String url = "http://192.168.0.154:5000/seq2seq";
-            String url = "http://192.168.0.154:5000/msgimage";
-            ContentValues contentValues = new ContentValues();
-            contentValues.put("name", nick);
-            contentValues.put("msg", msg);
-            // 입력 내용 비우기
-            EditText_chat.setText("");
-
-            // AsyncTask를 통해 HttpURLConnection 수행.
-            ChatActivity.NetworkTask networkTask = new ChatActivity.NetworkTask(url, contentValues);
-            networkTask.execute();
-        }
-    }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        if (requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null &&
-//                data.getData() != null)
-//        {
-//            Uri selectedImageUri = data.getData();
-//
-//        }
-//    }
-
-        //    private void showPopUp() {
-//
-//        if (attachmentTypeSelector == null) {
-//            attachmentTypeSelector =
-//                    new AttachmentTypeSelector(ChatActivity.this,
-//                            new AttachmentTypeListener());
-//        }
-//        attachmentTypeSelector.show(OneToOneChatActivity.this, ivAttchament);
-//    }
 
     public class NetworkTask extends AsyncTask<Void, Void, String> {
         private String url;
@@ -283,9 +269,10 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                             (String) (jsonObject.get("imageurl")));
 
                 }else if(jsonObject.get("latitude") != null && jsonObject.get("longitude") != null){
-                    chat = new MapChat(MSG_IMG_LEFT, (String) (jsonObject.get("sender")),
+                    chat = new MapChat(MSG_MAP_LEFT, (String) (jsonObject.get("sender")),
                             (String) (jsonObject.get("receiver")), (String) (jsonObject.get("message")),
-                            (Double)(jsonObject.get("latitude")), (Double)(jsonObject.get("longitude")));
+                            Double.parseDouble((String)(jsonObject.get("latitude"))),
+                            Double.parseDouble((String)(jsonObject.get("longitude"))));
                 }
                 else {
                     chat = new Chat(MSG_LEFT, (String) (jsonObject.get("sender")),
@@ -339,8 +326,6 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         String portNumber = "5000";
         String otherPath = "/img";
         String postUrl = "http://" + ipv4Address + ":" + portNumber + otherPath;
-//        String postUrl = "http://" + ipv4Address + ":" + portNumber + "/img";   # 선택
-
 
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
@@ -365,12 +350,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
         RequestBody postBodyImage = multipartBodyBuilder.build();
 
-//        RequestBody postBodyImage = new MultipartBody.Builder()
-//                .setType(MultipartBody.FORM)
-//                .addFormDataPart("image", "androidFlask.jpg", RequestBody.create(MediaType.parse("image/*jpg"), byteArray))
-//                .build();
-
-        postRequest(postUrl, postBodyImage);
+//        postRequest(postUrl, postBodyImage);
+        postRequest(messageImgPath, postBodyImage);
     }
 
     void postRequest(String postUrl, RequestBody postBody) {

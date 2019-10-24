@@ -32,15 +32,15 @@
         android:textColor="@color/defaultWhite"
         android:textSize="16sp" />
 
-    <ImageView
-        android:id="@+id/show_image"
+    <Button
+        android:id="@+id/show_map_btn"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
+        android:text="@string/showMap"
         android:layout_below="@id/show_message"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="5dp"
-        android:layout_toEndOf="@id/profile_image"
-        android:src="@drawable/fore_1"
-        android:scaleType="fitStart"/>
+        android:layout_toEndOf="@id/profile_image"/>
+<!--        android:background="@drawable/map_btn_design"/>-->
 
 </RelativeLayout>
