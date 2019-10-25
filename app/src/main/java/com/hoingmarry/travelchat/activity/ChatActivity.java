@@ -285,13 +285,13 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                             Double.parseDouble((String)(jsonObject.get("longitude"))));
                 }
                 else if (jsonObject.get("imageurl") != null) {
-//                    chat = new ImageChat(MSG_IMG_LEFT, (String) (jsonObject.get("sender")),
-//                            (String) (jsonObject.get("receiver")), (String) (jsonObject.get("message")),
-//                            (String) (jsonObject.get("imageurl")));
-                    chat = new ImageThumbChat(MSG_IMG_THUMB_LEFT, (String) (jsonObject.get("sender")),
+                    chat = new ImageChat(MSG_IMG_LEFT, (String) (jsonObject.get("sender")),
                             (String) (jsonObject.get("receiver")), (String) (jsonObject.get("message")),
-                            (String) (jsonObject.get("imageurl")), (String) (jsonObject.get("link")),
-                            (String) (jsonObject.get("message")));
+                            (String) (jsonObject.get("imageurl")), "");
+//                    chat = new ImageThumbChat(MSG_IMG_THUMB_LEFT, (String) (jsonObject.get("sender")),
+//                            (String) (jsonObject.get("receiver")), (String) (jsonObject.get("message")),
+//                            (String) (jsonObject.get("imageurl")), (String) (jsonObject.get("link")),
+//                            (String) (jsonObject.get("message")));
 
                 }
                 else {
