@@ -20,6 +20,7 @@ import com.hoingmarry.travelchat.chat.Chat;
 import com.hoingmarry.travelchat.R;
 import com.hoingmarry.travelchat.chat.ImageChat;
 import com.hoingmarry.travelchat.chat.ImageThumbChat;
+import com.hoingmarry.travelchat.chat.MapChat;
 import com.hoingmarry.travelchat.viewholder.MessageImageThumbViewHolder;
 import com.hoingmarry.travelchat.viewholder.MessageImageViewHolder;
 import com.hoingmarry.travelchat.viewholder.MessageMapViewHolder;
@@ -180,14 +181,16 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }break;
             case MSG_MAP_LEFT:
             {
+                final double lat = ((MapChat)chat).getLatitude();
+                final double lng = ((MapChat)chat).getLongitude();
                 ((MessageMapViewHolder)holder).show_message.setText(chat.getMessage());
                 ((MessageMapViewHolder)holder).nick.setText(chat.getSender());
                 ((MessageMapViewHolder)holder).showMapBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(mContext, MapSearchActivity.class);
-                        intent.putExtra("latitude", 37.563996959956604);
-                        intent.putExtra("longitude", 127.11477513394202);
+                        intent.putExtra("latitude", lat);
+                        intent.putExtra("longitude", lng);
                         mContext.startActivity(intent);
                     }
                 });
