@@ -9,8 +9,10 @@
     <color name="messageSingleLeft">#AB47BC</color>
     <color name="messageSingleRight">#FFA62E</color>
     <color name="messageImageLeft">#FFB6F0</color>
+    <color name="mapBtn">#ECE8D3</color>
     <color name="messageImageThumbLeft">#FFD8F2</color>
     <color name="messageImageThumbRight">#FFBF66</color>
-
     <color name="defaultWhite">#FFFFFD</color>
+
+    <color name="chattingColor">#e6e6e6</color>
 </resources>

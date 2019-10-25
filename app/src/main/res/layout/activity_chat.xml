@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation='vertical'
     android:weightSum="1"
-    android:background="#e6e6e6"
+    android:background="@color/chattingColor"
     tools:context=".activity.ChatActivity">
 
     <androidx.recyclerview.widget.RecyclerView

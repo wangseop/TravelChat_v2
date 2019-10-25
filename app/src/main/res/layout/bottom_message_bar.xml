@@ -3,16 +3,29 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:weightSum="2">
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/add_img_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="100dp"
+        android:visibility="gone">
+
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:id="@+id/add_img"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:src="@drawable/fore_1"
-            android:layout_margin="10dp"
-            android:scaleType="fitStart"/>
-    </LinearLayout>
+            android:layout_marginTop="10dp"
+            android:scaleType="fitEnd"
+            android:layout_toStartOf="@id/img_delete_btn"/>
+        <ImageButton
+            android:id="@+id/img_delete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_cancel_light_red"
+            android:background="@color/chattingColor"
+            android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +44,8 @@
             android:hint="Message를 입력하세요"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight='1'/>
+            android:layout_weight='1'
+            android:textColor="#000000"/>
 
         <ImageButton
             android:id="@+id/button_send"

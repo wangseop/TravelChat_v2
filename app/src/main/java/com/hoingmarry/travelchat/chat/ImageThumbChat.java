@@ -1,11 +1,11 @@
 package com.hoingmarry.travelchat.chat;
 
-public class ImageThumnChat extends ImageChat {
+public class ImageThumbChat extends ImageChat {
     private String imageComment;
 
-    public ImageThumnChat(int msgType, String sender, String receiver,
-                          String message, String imageUrl, String imageComment) {
-        super(msgType, sender, receiver, message, imageUrl);
+    public ImageThumbChat(int msgType, String sender, String receiver, String message,
+                          String imageUrl, String placeLink, String imageComment) {
+        super(msgType, sender, receiver, message, imageUrl, placeLink);
         this.imageComment = imageComment;
     }
 

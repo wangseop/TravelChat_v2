@@ -1,9 +1,7 @@
 package com.hoingmarry.travelchat.activity;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -28,18 +27,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.hoingmarry.travelchat.adapter.MessageAdapter;
 import com.hoingmarry.travelchat.chat.Chat;
 import com.hoingmarry.travelchat.R;
 import com.hoingmarry.travelchat.RequestHttpURLConnection;
-import com.hoingmarry.travelchat.chat.ImageChat;
-import com.hoingmarry.travelchat.chat.ImageThumnChat;
+import com.hoingmarry.travelchat.chat.ImageThumbChat;
 import com.hoingmarry.travelchat.chat.MapChat;
-import com.hoingmarry.travelchat.customview.AttachmentTypeSelector;
-import com.naver.maps.map.MapView;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -49,7 +46,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.Call;
@@ -73,10 +69,11 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton button_attach;
     private EditText EditText_chat;
     private ImageButton Button_send;
+    private RelativeLayout selectImgLayout;
 
     private final String welcomePath = "http://192.168.0.154:5000/hello";
-    private final String messagePath = "http://192.168.0.154:5000/msgimage";
-    private String messageImgPath = "http://192.168.0.154:5000/img";
+    private final String messagePath = "http://192.168.0.154:5000/msgmap";
+    private String messageImgPath = "http://192.168.0.154:5000/msgimage";
     MessageAdapter messageAdapter;
     List<Chat> mchat;
     RecyclerView recyclerView;
@@ -105,6 +102,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         button_attach = findViewById(R.id.button_attach);
         Button_send = findViewById(R.id.button_send);
         EditText_chat = findViewById(R.id.editText_chat);
+
+        selectImgLayout = findViewById(R.id.add_img_layout);
+        ((ImageButton)selectImgLayout.getChildAt(1)).setOnClickListener(this);
 
         // button 리스너 추가
         button_attach.setOnClickListener(this);
@@ -197,7 +197,19 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 if (imagesSelected) connectServer(v);
                 else sendMessage();
                 break;
+            case R.id.img_delete_btn:
+                RelativeLayout parent = (RelativeLayout)v.getParent();
+                imageSelectedLayoutClose(parent);
+                break;
         }
+    }
+    private void imageSelectedLayoutClose(RelativeLayout parent){
+
+        ((ImageView)parent.findViewById(R.id.add_img)).setImageURI(null);
+        parent.setVisibility(View.GONE);
+
+        selectedImagesPaths = null;
+        imagesSelected = false;
     }
 
     // 전송 버튼 선택
@@ -264,19 +276,22 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 Log.d("JSON", jsonObject.toString());
 
                 Chat chat = null;
-                if (jsonObject.get("imageurl") != null) {
+                if(jsonObject.get("latitude") != null && jsonObject.get("longitude") != null){
+                    chat = new MapChat(MSG_MAP_LEFT, (String) (jsonObject.get("sender")),
+                            (String) (jsonObject.get("receiver")), (String) (jsonObject.get("message")),
+                            (String) (jsonObject.get("imageurl")), (String) (jsonObject.get("link")),
+                            Double.parseDouble((String)(jsonObject.get("latitude"))),
+                            Double.parseDouble((String)(jsonObject.get("longitude"))));
+                }
+                else if (jsonObject.get("imageurl") != null) {
 //                    chat = new ImageChat(MSG_IMG_LEFT, (String) (jsonObject.get("sender")),
 //                            (String) (jsonObject.get("receiver")), (String) (jsonObject.get("message")),
 //                            (String) (jsonObject.get("imageurl")));
-                    chat = new ImageThumnChat(MSG_IMG_THUMB_LEFT, (String) (jsonObject.get("sender")),
+                    chat = new ImageThumbChat(MSG_IMG_THUMB_LEFT, (String) (jsonObject.get("sender")),
                             (String) (jsonObject.get("receiver")), (String) (jsonObject.get("message")),
-                            (String) (jsonObject.get("imageurl")), (String) (jsonObject.get("message")));
+                            (String) (jsonObject.get("imageurl")), (String) (jsonObject.get("link")),
+                            (String) (jsonObject.get("message")));
 
-                }else if(jsonObject.get("latitude") != null && jsonObject.get("longitude") != null){
-                    chat = new MapChat(MSG_MAP_LEFT, (String) (jsonObject.get("sender")),
-                            (String) (jsonObject.get("receiver")), (String) (jsonObject.get("message")),
-                            Double.parseDouble((String)(jsonObject.get("latitude"))),
-                            Double.parseDouble((String)(jsonObject.get("longitude"))));
                 }
                 else {
                     chat = new Chat(MSG_LEFT, (String) (jsonObject.get("sender")),
@@ -352,10 +367,12 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             multipartBodyBuilder.addFormDataPart("image" + i, "Android_Flask_" + i + ".jpg", RequestBody.create(MediaType.parse("image/*jpg"), byteArray));
         }
 
+
         RequestBody postBodyImage = multipartBodyBuilder.build();
 
 //        postRequest(postUrl, postBodyImage);
         postRequest(messageImgPath, postBodyImage);
+        imageSelectedLayoutClose(selectImgLayout);
     }
 
     void postRequest(String postUrl, RequestBody postBody) {
@@ -442,7 +459,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     // Thanks tp Laith Mihyar for this Stackoverflow answer : https://stackoverflow.com/a/34047251/5426539
                     if (data.getClipData() != null) {
                         ClipData clipData = data.getClipData();
-                        for (int i = 0; i < clipData.getItemCount(); i++) {
+//                        for (int i = 0; i < clipData.getItemCount(); i++) {
+                        for (int i = 0; i < 1; i++) {
 
                             ClipData.Item item = clipData.getItemAt(i);
                             Uri uri = item.getUri();
@@ -453,10 +471,15 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                             Log.d("ImageDetails", "Image Path " + i + " = " + currentImagePath);
                             imagesSelected = true;
                             Toast.makeText(getApplicationContext(),
-                                    "Number of Selected Images : " + selectedImagesPaths.size(), Toast.LENGTH_SHORT).show();
+                                    "Number of Selected Images : " + 1, Toast.LENGTH_SHORT).show();
+
+//                            Toast.makeText(getApplicationContext(),
+//                                    "Number of Selected Images : " + selectedImagesPaths.size(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
+                ((ImageView)selectImgLayout.getChildAt(0)).setImageURI(Uri.parse(selectedImagesPaths.get(0)));
+                selectImgLayout.setVisibility(View.VISIBLE);
             } else {
                 Toast.makeText(this, "You haven't Picked any Image.", Toast.LENGTH_LONG).show();
             }

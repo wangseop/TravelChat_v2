@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,7 @@ import com.hoingmarry.travelchat.activity.MapSearchActivity;
 import com.hoingmarry.travelchat.chat.Chat;
 import com.hoingmarry.travelchat.R;
 import com.hoingmarry.travelchat.chat.ImageChat;
-import com.hoingmarry.travelchat.chat.ImageThumnChat;
+import com.hoingmarry.travelchat.chat.ImageThumbChat;
 import com.hoingmarry.travelchat.viewholder.MessageImageThumbViewHolder;
 import com.hoingmarry.travelchat.viewholder.MessageImageViewHolder;
 import com.hoingmarry.travelchat.viewholder.MessageMapViewHolder;
@@ -132,6 +133,16 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ((MessageImageViewHolder)holder).show_image.setBackground(drawable);
                 ((MessageImageViewHolder)holder).show_image.setClipToOutline(true);
 
+                final String url = ((ImageChat)chat).getPlaceLink();
+                ((MessageImageViewHolder)holder).show_image.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        mContext.startActivity(intent);
+                    }
+                });
+
 
             }break;
             case MSG_IMG_THUMB_LEFT:
@@ -153,8 +164,17 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 //                ((MessageImageThumbViewHolder)holder).show_image.setBackground(drawable);
                 ((LinearLayout)((MessageImageThumbViewHolder)holder).show_image.getParent()).setClipToOutline(true);
 
+                final String url = ((ImageChat)chat).getPlaceLink();
+                ((MessageImageThumbViewHolder)holder).show_image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        mContext.startActivity(intent);
+                    }
+                });
+
                 // 이미지 코멘트
-                ((MessageImageThumbViewHolder)holder).showImageComment.setText(((ImageThumnChat)chat).getImageComment());
+                ((MessageImageThumbViewHolder)holder).showImageComment.setText(((ImageThumbChat)chat).getImageComment());
 
 
             }break;
@@ -177,6 +197,24 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }else {
                     Glide.with(mContext).load(imageurl).into(((MessageMapViewHolder) holder).profile_image);
                 }
+
+                Glide.with(mContext).load(((ImageChat)chat).getImageUrl()).
+                        into(((MessageMapViewHolder)holder).show_image);
+//                GradientDrawable drawable=
+//                        (GradientDrawable)mContext.getDrawable(R.drawable.thumbnail_rounding);
+//                ((MessageImageThumbViewHolder)holder).show_image.setBackground(drawable);
+                ((LinearLayout)((MessageMapViewHolder)holder).show_image.getParent()).setClipToOutline(true);
+
+                final String url = ((ImageChat)chat).getPlaceLink();
+                ((MessageMapViewHolder)holder).show_image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        mContext.startActivity(intent);
+                    }
+                });
+
+
             }break;
             default:
                 break;

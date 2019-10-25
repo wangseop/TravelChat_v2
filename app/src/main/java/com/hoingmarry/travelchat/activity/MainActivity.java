@@ -22,7 +22,6 @@ import com.naver.maps.map.overlay.LocationOverlay;
 
 public class MainActivity extends AppCompatActivity{
 
-    private Button btn_map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
