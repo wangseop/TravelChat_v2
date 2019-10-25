@@ -35,6 +35,7 @@ import com.hoingmarry.travelchat.adapter.MessageAdapter;
 import com.hoingmarry.travelchat.chat.Chat;
 import com.hoingmarry.travelchat.R;
 import com.hoingmarry.travelchat.RequestHttpURLConnection;
+import com.hoingmarry.travelchat.chat.ImageChat;
 import com.hoingmarry.travelchat.chat.ImageThumbChat;
 import com.hoingmarry.travelchat.chat.MapChat;
 
@@ -73,7 +74,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
     private final String welcomePath = "http://192.168.0.154:5000/hello";
     private final String messagePath = "http://192.168.0.154:5000/msgmap";
-    private String messageImgPath = "http://192.168.0.154:5000/msgimage";
+    private String messageImgPath = "http://192.168.0.154:5000/img";
     MessageAdapter messageAdapter;
     List<Chat> mchat;
     RecyclerView recyclerView;
@@ -370,6 +371,13 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
         RequestBody postBodyImage = multipartBodyBuilder.build();
 
+        // Image 사용자 Message로 출력
+
+
+        ((MessageAdapter)messageAdapter).addChat(new ImageChat(IMG_RIGHT, nick, "chatbot", "",
+                String.copyValueOf(selectedImagesPaths.get(0).toCharArray()), ""));
+
+
 //        postRequest(postUrl, postBodyImage);
         postRequest(messageImgPath, postBodyImage);
         imageSelectedLayoutClose(selectImgLayout);
@@ -410,9 +418,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                     JSONParser jsonParser = new JSONParser();
                     JSONObject jsonObject = (JSONObject)jsonParser.parse(res);
 //
-                    chat = new Chat(MSG_LEFT, (String)jsonObject.get("sender")
+                    chat = new ImageChat(MSG_IMG_LEFT, (String)jsonObject.get("sender")
                             , (String)jsonObject.get("receiver"),
-                            (String)jsonObject.get("message"));
+                            (String)jsonObject.get("message"), (String) (jsonObject.get("imageurl")), "");
 
 
                     ((MessageAdapter) messageAdapter).addChat(chat);

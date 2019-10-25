@@ -21,6 +21,7 @@ import com.hoingmarry.travelchat.R;
 import com.hoingmarry.travelchat.chat.ImageChat;
 import com.hoingmarry.travelchat.chat.ImageThumbChat;
 import com.hoingmarry.travelchat.chat.MapChat;
+import com.hoingmarry.travelchat.viewholder.ImageViewHolder;
 import com.hoingmarry.travelchat.viewholder.MessageImageThumbViewHolder;
 import com.hoingmarry.travelchat.viewholder.MessageImageViewHolder;
 import com.hoingmarry.travelchat.viewholder.MessageMapViewHolder;
@@ -70,6 +71,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 
             }break;
+            case IMG_RIGHT:{
+                View view = LayoutInflater.from(mContext).inflate(R.layout.image_layout_right, parent, false);
+                viewHolder = new ImageViewHolder(view);
+            }break;
             case MSG_IMG_LEFT:{
                 View view = LayoutInflater.from(mContext).inflate(R.layout.message_image_layout_left, parent, false);
                 viewHolder = new MessageImageViewHolder(view);
@@ -115,6 +120,15 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ((MessageViewHolder)holder).show_message.setText(chat.getMessage());
                 ((MessageViewHolder)holder).nick.setText(chat.getSender());
             }break;
+            case IMG_RIGHT:
+            {
+                ((ImageViewHolder)holder).nick.setText(chat.getSender());
+                ((ImageViewHolder)holder).show_image.setImageURI(Uri.parse(((ImageChat)chat).getImageUrl()));
+                GradientDrawable drawable=
+                        (GradientDrawable)mContext.getDrawable(R.drawable.thumbnail_rounding);
+                ((ImageViewHolder)holder).show_image.setBackground(drawable);
+                ((ImageViewHolder)holder).show_image.setClipToOutline(true);
+            }break;
                 // chatbot의 채팅 내용에만 profile 이미지 추가
             case MSG_IMG_LEFT:
             {
@@ -134,15 +148,15 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ((MessageImageViewHolder)holder).show_image.setBackground(drawable);
                 ((MessageImageViewHolder)holder).show_image.setClipToOutline(true);
 
-                final String url = ((ImageChat)chat).getPlaceLink();
-                ((MessageImageViewHolder)holder).show_image.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        mContext.startActivity(intent);
-                    }
-                });
+//                final String url = ((ImageChat)chat).getPlaceLink();
+//                ((MessageImageViewHolder)holder).show_image.setOnClickListener(new View.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View v) {
+//                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                        mContext.startActivity(intent);
+//                    }
+//                });
 
 
             }break;
