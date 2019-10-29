@@ -4,11 +4,14 @@
     <color name="colorPrimaryDark">#23A7D8</color>
     <color name="colorAccent">#FFFFFF</color>
     <color name="white">#FFFFFF</color>
-    <color name="gradientStart">#AF8F8F</color>
-    <color name="gradientCenter">#AF8F8F</color>
-    <color name="gradientEnd">#AF8F8F</color>
-
-
+    <color name="black">#000000</color>
+    <color name="gradientStart">#E1F8FA</color>
+    <color name="gradientCenter">#E1F8FA</color>
+    <color name="gradientEnd">#E1F8FA</color>
+    <color name="bottomBar">#E1F8FA</color>
+    <color name="bottomBarLeft">#E1F8FA</color>
+    <color name="bottomBarRight">#E1F8FA</color>
+    <color name="chatBackground">#D5E8F8</color>
 
     <color name="popupGallery">#AB47BC</color>
     <color name="attachmentBaseColor">#FAFAFA</color>

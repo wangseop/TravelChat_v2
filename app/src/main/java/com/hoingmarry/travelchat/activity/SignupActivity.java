@@ -11,96 +11,85 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.webkit.CookieManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.hoingmarry.travelchat.R;
 import com.hoingmarry.travelchat.RequestHttpURLConnection;
-import com.hoingmarry.travelchat.adapter.MessageAdapter;
-import com.hoingmarry.travelchat.chat.Chat;
-import com.hoingmarry.travelchat.chat.ImageChat;
-import com.hoingmarry.travelchat.chat.MapChat;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import static com.hoingmarry.travelchat.contracts.StringContract.MessageType.MSG_IMG_LEFT;
-import static com.hoingmarry.travelchat.contracts.StringContract.MessageType.MSG_LEFT;
-import static com.hoingmarry.travelchat.contracts.StringContract.MessageType.MSG_MAP_LEFT;
-
-import static com.hoingmarry.travelchat.contracts.StringContract.ResultCode.*;
-
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-
-
+public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText editID;
     private EditText editPassword;
-    private Button loginBtn;
+    private EditText editPasswordConfirm;
     private Button signupBtn;
-    private Context mContext;
+    private Button backBtn;
 
-    private final static String loginUrl = "http://192.168.0.154:5000/login";
+    private final static String signupUrl = "http://192.168.0.154:5000/signup";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signup);
+        editID = (EditText) findViewById(R.id.id_input_signup);
+        editPassword = (EditText) findViewById(R.id.password_confirm_input_signup);
+        editPasswordConfirm = (EditText) findViewById(R.id.password_input_signup);
+        signupBtn = (Button) findViewById(R.id.signup_request_btn);
+        backBtn = (Button) findViewById(R.id.back_login_btn);
 
 
-        editID = (EditText)findViewById(R.id.id_input_login);
-        editPassword = (EditText)findViewById(R.id.password_input_login);
-        loginBtn = (Button)findViewById(R.id.login_btn);
-        signupBtn = (Button)findViewById(R.id.signup_btn);
-
-        mContext = LoginActivity.this;
-
-        ((LinearLayout)findViewById(R.id.login_thumbnail)).
-                startAnimation(AnimationUtils.loadAnimation(this, R.anim.fadein));
-
-
-        loginBtn.setOnClickListener(this);
         signupBtn.setOnClickListener(this);
-
+        backBtn.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.fadein);
         v.startAnimation(animation);
-
-        switch(v.getId())
-        {
-            case R.id.login_btn:
-            {
+        switch (v.getId()) {
+            case R.id.signup_request_btn: {
                 // HttpUrlRequest에 담을 값
+                if (!validatePassword()) {
+                    Toast.makeText(getApplicationContext(),
+                            "패스워드 확인값과 일치하지않습니다", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 ContentValues values = new ContentValues();
                 values.put("id", editID.getText().toString());
                 values.put("password", editPassword.getText().toString());
 
 
-                NetworkLoginTask task = new NetworkLoginTask(loginUrl, values);
+                SignupActivity.NetworkSignupTask task = new SignupActivity.NetworkSignupTask(signupUrl, values);
                 task.execute();
+
 //                Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
 //
 //                intent.putExtra("nick", editID.getText().toString());
 //                intent.putExtra("cookie", editID.getText().toString());
 //                startActivity(intent);
-            }break;
-            case R.id.signup_btn:
-            {
-                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
-                startActivity(intent);
-            }break;
+            }
+            break;
+            case R.id.back_login_btn: {
+                this.finish();
+            }
+            break;
         }
     }
-    public class NetworkLoginTask extends AsyncTask<Void, Void, String> {
+
+    public boolean validatePassword(){
+        return editPassword.getText().toString().equals(editPasswordConfirm.getText().toString());
+    }
+
+    public class NetworkSignupTask extends AsyncTask<Void, Void, String> {
         private String url;
         private ContentValues values;
 
-        public NetworkLoginTask(String url, ContentValues values) {
+        public NetworkSignupTask(String url, ContentValues values) {
             Log.d("Enter...", "Construct NetworkTask");
             this.url = url;
             this.values = values;
@@ -130,25 +119,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 JSONObject jsonObject = (JSONObject) (jsonParser.parse(s));
                 Log.d("JSON", jsonObject.toString());
 
-                String state = (String)jsonObject.get("state");
-                String nick = (String)jsonObject.get("nick");
-                String cookie = (String)jsonObject.get("cookie");
+                String state = (String) jsonObject.get("state");
 
-                if (state.equals("OK"))
-                {
-
-                    Intent intent = new Intent(mContext, ChatActivity.class);
-
-                    intent.putExtra("nick", editID.getText().toString());
-                    intent.putExtra("cookie", editID.getText().toString());
-                    startActivity(intent);
-
+                if (state.equals("OK")) {
+                    Toast.makeText(SignupActivity.this.getApplicationContext(),
+                            "회원 가입이 완료되었습니다", Toast.LENGTH_SHORT).show();
+                    SignupActivity.this.finish();
                 }
 
 
             } catch (ParseException e) {
                 e.printStackTrace();
-            }catch(NullPointerException e){
+            } catch (NullPointerException e) {
                 Toast.makeText(getApplicationContext(), "ID / Password 를 확인해주세요", Toast.LENGTH_SHORT).show();
 
             }
@@ -157,5 +139,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }
     }
-
 }

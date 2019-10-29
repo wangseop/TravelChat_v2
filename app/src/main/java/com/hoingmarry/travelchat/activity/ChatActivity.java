@@ -25,6 +25,8 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -195,6 +197,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     // 클릭 리스너 재정의
     @Override
     public void onClick(View v) {
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.fadein);
+        v.startAnimation(animation);
         switch(v.getId()){
             case R.id.button_attach:
                 selectImage(v);
