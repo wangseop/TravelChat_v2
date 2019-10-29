@@ -66,7 +66,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private final int GET_GALLERY_IMAGE = 200;
 
     private String nick = "User";      // 단말기 닉네임
-
+    private String cookie;
     private ImageButton button_attach;
     private EditText EditText_chat;
     private ImageButton Button_send;
@@ -95,7 +95,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
 
         Intent intent = this.getIntent();
-        nick = intent.getStringExtra("id");
+        nick = intent.getStringExtra("nick");
+        cookie = intent.getStringExtra("cookie");
+
         // Manifest에 설정할 권한 부여
         ActivityCompat.requestPermissions(ChatActivity.this, new String[]{Manifest.permission.INTERNET}, 2);
         ActivityCompat.requestPermissions(ChatActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
@@ -141,6 +143,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         ContentValues contentValues = new ContentValues();
         contentValues.put("name",nick);
         contentValues.put("msg","welcom");
+        // 쿠키 추가
+        contentValues.put("cookie", cookie);
+
         // 입력 내용 비우기
         EditText_chat.setText("");
 
@@ -235,6 +240,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             ContentValues contentValues = new ContentValues();
             contentValues.put("name",nick);
             contentValues.put("msg",msg);
+            contentValues.put("cookie", cookie);
             // 입력 내용 비우기
             EditText_chat.setText("");
 
@@ -308,6 +314,10 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
             } catch (ParseException e) {
                 e.printStackTrace();
+            }catch(NullPointerException e){
+                Toast.makeText(getApplicationContext(),
+                        "Data 누락", Toast.LENGTH_SHORT).show();
+
             }
 
             // doInBackground()로부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
@@ -390,6 +400,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
+                .addHeader("cookie", cookie)
                 .url(postUrl)
                 .post(postBody)
                 .build();
@@ -435,6 +446,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 catch(ParseException e){
                     e.printStackTrace();
+                }catch(NullPointerException e){
+                    Toast.makeText(getApplicationContext(), "사진 데이터 누락", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });

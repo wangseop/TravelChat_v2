@@ -14,4 +14,9 @@ public class StringContract {
         public static final int MSG_MAP_LEFT = 8;
         public static final int MSG_MAP_RIGHT = 9;
     }
+
+    public static class ResultCode{
+        public static final int LOGIN_OK = 1;
+        public static final int LOGIN_FAIL = 2;
+    }
 }

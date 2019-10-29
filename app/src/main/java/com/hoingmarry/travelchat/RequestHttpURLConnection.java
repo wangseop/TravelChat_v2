@@ -32,7 +32,7 @@ public class RequestHttpURLConnection {
 
 
     public String request(String _url, ContentValues _params){
-
+        String cookie = null;
         Log.d("Enter...", "request for RequestHttpURLConnection");
 
         // HttpURLConnection 참조 변수.
@@ -61,6 +61,10 @@ public class RequestHttpURLConnection {
                 key = parameter.getKey();
                 value = parameter.getValue().toString();
 
+                if (key == "cookie"){
+                    cookie = value;
+                    continue;
+                }
                 // 파라미터가 두개 이상일 때, 파라미터 사이에 &를 붙인다.
                 if (isAnd)
                     sbParams.append(",");
@@ -86,12 +90,15 @@ public class RequestHttpURLConnection {
 
         try
         {
+            
             URL url = new URL(_url);
             urlConn = (HttpURLConnection)url.openConnection();
 
             // [2-1]. urlConn 설정.`
             urlConn.setRequestMethod("POST");   // URL 요청에 대한 메소드 설정 : POST  //
+            urlConn.setRequestProperty("Cookie", cookie);
             urlConn.setRequestProperty("content-type", "application/json;charset=UTF-8");
+
 
             PrintWriter pw = new PrintWriter(
                     new OutputStreamWriter(urlConn.getOutputStream(), "utf-8"));
