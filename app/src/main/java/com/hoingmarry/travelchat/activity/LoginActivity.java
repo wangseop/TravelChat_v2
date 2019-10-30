@@ -1,5 +1,6 @@
 package com.hoingmarry.travelchat.activity;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
@@ -41,7 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editPassword;
     private Button loginBtn;
     private Button signupBtn;
-    private Context mContext;
+    private ActionBar actionbar;
 
     private final static String loginUrl = "http://192.168.0.154:5000/login";
     @Override
@@ -49,13 +50,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // 액션바 비활성화
+        actionbar = getSupportActionBar();
+        actionbar.hide();
 
         editID = (EditText)findViewById(R.id.id_input_login);
         editPassword = (EditText)findViewById(R.id.password_input_login);
         loginBtn = (Button)findViewById(R.id.login_btn);
         signupBtn = (Button)findViewById(R.id.signup_btn);
 
-        mContext = LoginActivity.this;
 
         ((LinearLayout)findViewById(R.id.login_thumbnail)).
                 startAnimation(AnimationUtils.loadAnimation(this, R.anim.fadein));
@@ -137,10 +140,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (state.equals("OK"))
                 {
 
-                    Intent intent = new Intent(mContext, ChatActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
 
                     intent.putExtra("nick", editID.getText().toString());
-                    intent.putExtra("cookie", editID.getText().toString());
+                    intent.putExtra("cookie", cookie);
                     startActivity(intent);
 
                 }

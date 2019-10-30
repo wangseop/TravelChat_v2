@@ -1,5 +1,6 @@
 package com.hoingmarry.travelchat.activity;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,10 +11,17 @@ import com.hoingmarry.travelchat.R;
 
 public class SplashActivity extends AppCompatActivity {
 
+    private ActionBar actionbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+
+        // 액션바 비활성화
+        actionbar = getSupportActionBar();
+        actionbar.hide();
 
         Handler hd = new Handler();
         hd.postDelayed(new SplashHandler(), 1000);

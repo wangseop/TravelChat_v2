@@ -1,5 +1,6 @@
 package com.hoingmarry.travelchat.activity;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -73,6 +74,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private EditText EditText_chat;
     private ImageButton Button_send;
     private RelativeLayout selectImgLayout;
+    private ActionBar actionbar;
+
 
     private final String welcomePath = "http://192.168.0.154:5000/hello";
     private final String messagePath = "http://192.168.0.154:5000/msgmap";
@@ -99,6 +102,10 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = this.getIntent();
         nick = intent.getStringExtra("nick");
         cookie = intent.getStringExtra("cookie");
+
+        // 액션바 비활성화
+        actionbar = getSupportActionBar();
+        actionbar.hide();
 
         // Manifest에 설정할 권한 부여
         ActivityCompat.requestPermissions(ChatActivity.this, new String[]{Manifest.permission.INTERNET}, 2);

@@ -1,5 +1,6 @@
 package com.hoingmarry.travelchat.activity;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
@@ -28,6 +29,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private EditText editPasswordConfirm;
     private Button signupBtn;
     private Button backBtn;
+    private ActionBar actionbar;
 
     private final static String signupUrl = "http://192.168.0.154:5000/signup";
 
@@ -41,6 +43,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         signupBtn = (Button) findViewById(R.id.signup_request_btn);
         backBtn = (Button) findViewById(R.id.back_login_btn);
 
+
+        // 액션바 비활성화
+        actionbar = getSupportActionBar();
+        actionbar.hide();
 
         signupBtn.setOnClickListener(this);
         backBtn.setOnClickListener(this);
