@@ -2,6 +2,7 @@ package com.hoingmarry.travelchat.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
@@ -20,6 +21,7 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
 
     private double lat;
     private double lng;
+//    private Toolbar mapToolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +30,10 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
 
         lat = intent.getDoubleExtra("latitude", 37.0);
         lng = intent.getDoubleExtra("longitude", 127.0);
+
+//        mapToolbar = (Toolbar)findViewById(R.id.map_search_toolbar);
+
+//        setSupportActionBar(mapToolbar);
 
         FragmentManager fm = getSupportFragmentManager();
         MapFragment mapFragment = (MapFragment)fm.findFragmentById(R.id.map_search);

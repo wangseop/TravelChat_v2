@@ -6,7 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".activity.MapSearchActivity"
     android:id="@+id/activity_map_search">
-
+<!--    <android.support.v7.widget.Toolbar-->
+<!--        android:id="@+id/map_search_toolbar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/colorPrimary"-->
+<!--        android:elevation="4dp"-->
+<!--        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"-->
+<!--        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>-->
     <fragment
         android:id="@+id/map_search"
         android:layout_width="match_parent"

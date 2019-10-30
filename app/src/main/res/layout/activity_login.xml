@@ -8,7 +8,6 @@
     android:paddingTop="30dp"
     android:paddingBottom="30dp"
     android:background="@drawable/splash_img">
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

@@ -238,7 +238,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             Log.d("Confirm msg", msg);
 
             ((MessageAdapter)messageAdapter).addChat(chat);
-//                    mRecyclerView.smoothScrollToPosition(mAdapter.getItemCount() - 1);
+            recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
             // URL 설정.
             String url = messagePath;
             ContentValues contentValues = new ContentValues();
@@ -393,6 +393,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         ((MessageAdapter)messageAdapter).addChat(new ImageChat(IMG_RIGHT, nick, "chatbot", "",
                 String.copyValueOf(selectedImagesPaths.get(0).toCharArray()), ""));
 
+        recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
 
 //        postRequest(postUrl, postBodyImage);
         postRequest(messageImgPath, postBodyImage);
