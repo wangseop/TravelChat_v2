@@ -113,12 +113,14 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
         setContentView(R.layout.activity_chat);
 
+        // 문장 입력 바
         button_attach = findViewById(R.id.button_attach);
         Button_send = findViewById(R.id.button_send);
         EditText_chat = findViewById(R.id.editText_chat);
 
         selectImgLayout = findViewById(R.id.add_img_layout);
         ((ImageButton)selectImgLayout.getChildAt(1)).setOnClickListener(this);
+
 
         // button 리스너 추가
         button_attach.setOnClickListener(this);
