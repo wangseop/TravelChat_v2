@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.hoingmarry.travelchat.activity.MapSearchActivity;
+import com.hoingmarry.travelchat.activity.PlaceLinkActivity;
 import com.hoingmarry.travelchat.chat.Chat;
 import com.hoingmarry.travelchat.R;
 import com.hoingmarry.travelchat.chat.ImageChat;
@@ -226,8 +227,11 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ((MessageMapViewHolder)holder).show_image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        Intent intent = new Intent(mContext, PlaceLinkActivity.class);
+                        intent.putExtra("link", url);
                         mContext.startActivity(intent);
+//                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                        mContext.startActivity(intent);
                     }
                 });
 
