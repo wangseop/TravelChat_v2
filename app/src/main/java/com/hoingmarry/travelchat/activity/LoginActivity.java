@@ -2,6 +2,7 @@ package com.hoingmarry.travelchat.activity;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -42,7 +43,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editPassword;
     private Button loginBtn;
     private Button signupBtn;
-    private ActionBar actionbar;
+//    private ActionBar actionbar;
 
     private final static String loginUrl = "http://192.168.0.154:5000/login";
     @Override
@@ -50,9 +51,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // 액션바 비활성화
-        actionbar = getSupportActionBar();
-        actionbar.hide();
+//        // 액션바 비활성화
+//        actionbar = getSupportActionBar();
+//        actionbar.hide();
 
         editID = (EditText)findViewById(R.id.id_input_login);
         editPassword = (EditText)findViewById(R.id.password_input_login);

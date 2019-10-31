@@ -11,7 +11,7 @@ import com.hoingmarry.travelchat.R;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private ActionBar actionbar;
+//    private ActionBar actionbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,9 +19,9 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
 
-        // 액션바 비활성화
-        actionbar = getSupportActionBar();
-        actionbar.hide();
+//        // 액션바 비활성화
+//        actionbar = getSupportActionBar();
+//        actionbar.hide();
 
         Handler hd = new Handler();
         hd.postDelayed(new SplashHandler(), 1000);

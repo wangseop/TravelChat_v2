@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.hoingmarry.travelchat.R;
 import com.naver.maps.geometry.LatLng;
@@ -22,7 +23,7 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
 
     private double lat;
     private double lng;
-    private ActionBar mapActionbar;
+    private Toolbar mapActionbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,9 +33,14 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
         lat = intent.getDoubleExtra("latitude", 37.0);
         lng = intent.getDoubleExtra("longitude", 127.0);
 
-        // 액션바
-        mapActionbar = getSupportActionBar();
-        mapActionbar.setTitle("");
+        // 액션바(툴바를 액션바로 세팅)
+        mapActionbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mapActionbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Trigo");
+
+        // 액션바 뒤로가기 버튼 추가
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         FragmentManager fm = getSupportFragmentManager();
         MapFragment mapFragment = (MapFragment)fm.findFragmentById(R.id.map_search);
@@ -45,6 +51,17 @@ public class MapSearchActivity extends AppCompatActivity implements OnMapReadyCa
 
 
         mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

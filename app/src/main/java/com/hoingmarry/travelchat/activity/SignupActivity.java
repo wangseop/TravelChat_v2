@@ -29,7 +29,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private EditText editPasswordConfirm;
     private Button signupBtn;
     private Button backBtn;
-    private ActionBar actionbar;
+//    private ActionBar actionbar;
 
     private final static String signupUrl = "http://192.168.0.154:5000/signup";
 
@@ -44,9 +44,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         backBtn = (Button) findViewById(R.id.back_login_btn);
 
 
-        // 액션바 비활성화
-        actionbar = getSupportActionBar();
-        actionbar.hide();
+//        // 액션바 비활성화
+//        actionbar = getSupportActionBar();
+//        actionbar.hide();
 
         signupBtn.setOnClickListener(this);
         backBtn.setOnClickListener(this);
