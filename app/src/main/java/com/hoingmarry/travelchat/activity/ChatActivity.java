@@ -514,8 +514,11 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }
                 }
+
+                // 선택한 이미지 보여주는 Layout 추가
                 ((ImageView)selectImgLayout.getChildAt(0)).setImageURI(Uri.parse(selectedImagesPaths.get(0)));
                 selectImgLayout.setVisibility(View.VISIBLE);
+
             } else {
                 Toast.makeText(this, "You haven't Picked any Image.", Toast.LENGTH_LONG).show();
             }
