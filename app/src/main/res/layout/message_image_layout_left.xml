@@ -39,6 +39,7 @@
             android:textColor="@color/defaultWhite"
             android:textSize="14sp" />
 
+
         <ImageView
             android:id="@+id/show_image"
             android:layout_width="wrap_content"

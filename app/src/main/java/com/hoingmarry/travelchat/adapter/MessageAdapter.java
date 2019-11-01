@@ -133,6 +133,12 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 // chatbot의 채팅 내용에만 profile 이미지 추가
             case MSG_IMG_LEFT:
             {
+                // 줄임문 테스트
+//                String message = chat.getMessage();
+//                Log.d("Message", ""+message.length());
+//                int length = message.length() > 200 ? 200 : message.length();
+//
+//                ((MessageImageViewHolder)holder).show_message.setText(message.substring(0, length) + " ...");
                 ((MessageImageViewHolder)holder).show_message.setText(chat.getMessage());
                 ((MessageImageViewHolder)holder).nick.setText(chat.getSender());
 
