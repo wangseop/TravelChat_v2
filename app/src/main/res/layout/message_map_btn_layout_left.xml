@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
     android:paddingTop="10dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:weightSum="4">
 
     <RelativeLayout
         android:layout_width="0dp"

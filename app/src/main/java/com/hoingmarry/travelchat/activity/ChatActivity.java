@@ -239,7 +239,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         Chat chat;
         if (msg != null) {
             // 사용자 입력 메세지 화면에 추가
-            chat = new Chat(MSG_RIGHT, nick, "chatbot", msg);
+            chat = new Chat(MSG_RIGHT, nick, "Trigobot", msg);
             // 개행 처리하는 코드(json에서 parsing 못하는 에러 방지)
             // 받는쪽에서 \n -> n 으로 인식
             msg = msg.replaceAll("\n", "\\n");
@@ -399,7 +399,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         // Image 사용자 Message로 출력
 
 
-        ((MessageAdapter)messageAdapter).addChat(new ImageChat(IMG_RIGHT, nick, "chatbot", "",
+        ((MessageAdapter)messageAdapter).addChat(new ImageChat(IMG_RIGHT, nick, "Trigobot", "",
                 String.copyValueOf(selectedImagesPaths.get(0).toCharArray()), ""));
 
         recyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);

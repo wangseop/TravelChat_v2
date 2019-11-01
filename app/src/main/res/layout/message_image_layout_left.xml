@@ -4,7 +4,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
-    android:paddingTop="10dp">
+    android:paddingTop="10dp"
+    android:weightSum="4">
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
