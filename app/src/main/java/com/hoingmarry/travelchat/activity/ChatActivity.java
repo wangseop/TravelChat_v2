@@ -308,7 +308,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
                 else if (jsonObject.get("imageurl") != null) {
                     chat = new ImageChat(MSG_IMG_LEFT, (String) (jsonObject.get("sender")),
                             (String) (jsonObject.get("receiver")), (String) (jsonObject.get("message")),
-                            (String) (jsonObject.get("imageurl")), "");
+                            (String) (jsonObject.get("imageurl")), (String) (jsonObject.get("link")));
 //                    chat = new ImageThumbChat(MSG_IMG_THUMB_LEFT, (String) (jsonObject.get("sender")),
 //                            (String) (jsonObject.get("receiver")), (String) (jsonObject.get("message")),
 //                            (String) (jsonObject.get("imageurl")), (String) (jsonObject.get("link")),
@@ -447,7 +447,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 //
                     chat = new ImageChat(MSG_IMG_LEFT, (String)jsonObject.get("sender")
                             , (String)jsonObject.get("receiver"),
-                            (String)jsonObject.get("message"), (String) (jsonObject.get("imageurl")), "");
+                            (String)jsonObject.get("message"), (String) (jsonObject.get("imageurl")),
+                            (String)(jsonObject.get("link")));
 
 
                     ((MessageAdapter) messageAdapter).addChat(chat);

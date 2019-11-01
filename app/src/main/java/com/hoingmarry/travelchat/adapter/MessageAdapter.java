@@ -149,15 +149,18 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 ((MessageImageViewHolder)holder).show_image.setBackground(drawable);
                 ((MessageImageViewHolder)holder).show_image.setClipToOutline(true);
 
-//                final String url = ((ImageChat)chat).getPlaceLink();
-//                ((MessageImageViewHolder)holder).show_image.setOnClickListener(new View.OnClickListener() {
-//
-//                    @Override
-//                    public void onClick(View v) {
+                final String url = ((ImageChat)chat).getPlaceLink();
+                ((MessageImageViewHolder)holder).show_image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (url == null) return;
+                        Intent intent = new Intent(mContext, PlaceLinkActivity.class);
+                        intent.putExtra("link", url);
+                        mContext.startActivity(intent);
 //                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 //                        mContext.startActivity(intent);
-//                    }
-//                });
+                    }
+                });
 
 
             }break;
