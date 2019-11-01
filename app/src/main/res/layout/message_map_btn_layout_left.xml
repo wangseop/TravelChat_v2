@@ -1,66 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="350dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:paddingTop="10dp">
+    android:layout_marginLeft="5dp"
+    android:paddingTop="10dp"
+    android:orientation="horizontal">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:src="@drawable/round_tan" />
-    <TextView
-        android:id="@+id/nick"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/profile_image"
-        android:layout_marginLeft="8dp"
-        android:text="@string/messageSingleLeft"
-        android:textSize="12sp"
-        android:textColor="#000000"/>
-    <TextView
-        android:id="@+id/show_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="8dp"
-        android:layout_toEndOf="@id/profile_image"
-        android:background="@drawable/message_text_background_left"
-        android:padding="8dp"
-        android:text="@string/messageSingleLeft"
-        android:textColor="@color/defaultWhite"
-        android:textSize="14sp" />
-
-    <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@id/show_message"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="5dp"
-        android:layout_toEndOf="@id/profile_image"
-        android:background="@drawable/message_imagethumb_background_left"
-        android:orientation="vertical"
-        android:weightSum="2">
-        <ImageView
-            android:id="@+id/show_image"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/fore_1"/>
-        <Button
-            android:id="@+id/show_map_btn"
-            android:layout_width="match_parent"
+        android:layout_weight="3">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/round_tan" />
+        <TextView
+            android:id="@+id/nick"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/showMap"
-            android:layout_below="@id/show_message"
-            android:layout_margin="5dp"
             android:layout_toEndOf="@id/profile_image"
-            android:background="@drawable/map_btn_design"/>
-        <!--        android:background="@drawable/map_btn_design"/>-->
-    </LinearLayout>
+            android:layout_marginLeft="8dp"
+            android:text="@string/messageSingleLeft"
+            android:textSize="12sp"
+            android:textColor="#000000"/>
+        <TextView
+            android:id="@+id/show_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="8dp"
+            android:layout_toEndOf="@id/profile_image"
+            android:background="@drawable/message_text_background_left"
+            android:padding="8dp"
+            android:text="@string/messageSingleLeft"
+            android:textColor="@color/defaultWhite"
+            android:textSize="14sp" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/show_message"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@id/profile_image"
+            android:background="@drawable/message_imagethumb_background_left"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/show_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitStart"
+                android:src="@drawable/fore_1"/>
+            <Button
+                android:id="@+id/show_map_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/showMap"
+                android:layout_below="@id/show_message"
+                android:layout_margin="5dp"
+                android:layout_toEndOf="@id/profile_image"
+                android:background="@drawable/map_btn_design"/>
+        </LinearLayout>
+    </RelativeLayout>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
 
-</RelativeLayout>
+</LinearLayout>
