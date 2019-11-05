@@ -3,6 +3,7 @@ package com.hoingmarry.travelchat.activity;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +30,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -41,6 +43,7 @@ import com.hoingmarry.travelchat.RequestHttpURLConnection;
 import com.hoingmarry.travelchat.chat.ImageChat;
 import com.hoingmarry.travelchat.chat.ImageThumbChat;
 import com.hoingmarry.travelchat.chat.MapChat;
+import com.hoingmarry.travelchat.fragment.ChatBoxFragment;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -65,7 +68,6 @@ import static com.hoingmarry.travelchat.contracts.StringContract.MessageType.*;
 
 
 public class ChatActivity extends AppCompatActivity implements View.OnClickListener{
-
     private final int GET_GALLERY_IMAGE = 200;
 
     private String nick = "User";      // 단말기 닉네임
@@ -74,12 +76,13 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private EditText EditText_chat;
     private ImageButton Button_send;
     private RelativeLayout selectImgLayout;
+//    private FrameLayout inputLayout;
 //    private ActionBar actionbar;
 
 
-    private final String welcomePath = "http://192.168.0.154:5000/hello";
-    private final String messagePath = "http://192.168.0.154:5000/msgmap";
-    private String messageImgPath = "http://192.168.0.154:5000/img";
+    private final String welcomePath = "http://192.168.0.147:30001/";
+    private final String messagePath = "http://192.168.0.147:30001/chatbot";
+    private String messageImgPath = "http://192.168.0.147:30001/img";
     MessageAdapter messageAdapter;
     List<Chat> mchat;
     RecyclerView recyclerView;
@@ -114,15 +117,16 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_chat);
 
         // 문장 입력 바
-        button_attach = findViewById(R.id.button_attach);
-        Button_send = findViewById(R.id.button_send);
         EditText_chat = findViewById(R.id.editText_chat);
-
         selectImgLayout = findViewById(R.id.add_img_layout);
-        ((ImageButton)selectImgLayout.getChildAt(1)).setOnClickListener(this);
-
 
         // button 리스너 추가
+        button_attach = findViewById(R.id.button_attach);
+        Button_send = findViewById(R.id.button_send);
+//        button_attach = inputLayout.getChildAt(0).findViewById(R.id.button_attach);
+//        Button_send = inputLayout.getChildAt(0).findViewById(R.id.button_send);
+
+        ((ImageButton)selectImgLayout.getChildAt(1)).setOnClickListener(this);
         button_attach.setOnClickListener(this);
         Button_send.setOnClickListener(this);
 
@@ -133,6 +137,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+
 
         // 대화리스트 초기화
         mchat = new ArrayList<>();
@@ -147,6 +153,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
         // RecyclerView와 Adapter 연결
         recyclerView.setAdapter(messageAdapter);
+
 
 
 //        // Hello Message event 처리

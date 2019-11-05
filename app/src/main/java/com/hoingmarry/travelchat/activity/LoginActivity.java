@@ -26,6 +26,8 @@ import com.hoingmarry.travelchat.chat.Chat;
 import com.hoingmarry.travelchat.chat.ImageChat;
 import com.hoingmarry.travelchat.chat.MapChat;
 
+import org.json.simple.JSONArray;
+import org.json.JSONException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -45,7 +47,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button signupBtn;
 //    private ActionBar actionbar;
 
-    private final static String loginUrl = "http://192.168.0.154:5000/login";
+    private final static String loginUrl = "http://192.168.0.147:30001/login";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,7 +135,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 JSONParser jsonParser = new JSONParser();
                 JSONObject jsonObject = (JSONObject) (jsonParser.parse(s));
                 Log.d("JSON", jsonObject.toString());
-
                 String state = (String)jsonObject.get("state");
                 String nick = (String)jsonObject.get("nick");
                 String cookie = (String)jsonObject.get("cookie");
