@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,7 @@ import com.hoingmarry.travelchat.adapter.MessageAdapter;
 import com.hoingmarry.travelchat.chat.Chat;
 import com.hoingmarry.travelchat.chat.ImageChat;
 import com.hoingmarry.travelchat.chat.MapChat;
+import com.hoingmarry.travelchat.utils.SharedPreference;
 
 import org.json.simple.JSONArray;
 import org.json.JSONException;
@@ -45,11 +47,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editPassword;
     private Button loginBtn;
     private Button signupBtn;
+    private SharedPreferences pref;
 //    private ActionBar actionbar;
 
     private final static String loginUrl = "http://192.168.0.147:30001/login";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // SharedPreference 생성
+        pref = getSharedPreferences("login_info", 0);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -69,6 +75,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         loginBtn.setOnClickListener(this);
         signupBtn.setOnClickListener(this);
+
+        // SharedPreference 호출
+
+        if(pref.getBoolean("state", false)){
+            ContentValues values = new ContentValues();
+            values.put("id", pref.getString("id", null));
+            values.put("password", pref.getString("password", null));
+
+            NetworkLoginTask task = new NetworkLoginTask(loginUrl, values);
+            task.execute();
+        }
+
 
     }
 
@@ -141,10 +159,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 if (state.equals("OK"))
                 {
-
+                    if(!pref.getBoolean("state", false)){
+                        pref.edit().putBoolean("state", true);
+                        pref.edit().putString("id", editID.getText().toString());
+                        pref.edit().putString("password", editPassword.getText().toString());
+                    }
                     Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
 
-                    intent.putExtra("nick", editID.getText().toString());
+                    intent.putExtra("nick", pref.getString("id", null));
                     intent.putExtra("cookie", cookie);
                     startActivity(intent);
 
