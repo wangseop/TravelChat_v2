@@ -7,16 +7,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.hoingmarry.travelchat.R;
 import com.hoingmarry.travelchat.data.user.LoginData;
 import com.hoingmarry.travelchat.network.NetworkLoginTask;
+import com.hoingmarry.travelchat.utils.SharedPreference;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -26,6 +28,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button loginBtn;
     private Button signupBtn;
     private SharedPreferences pref;
+    private CheckBox autoLogin;
 //    private ActionBar actionbar;
 
     private final static String loginUrl = "http://192.168.0.154:5000/login";
@@ -33,7 +36,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         // SharedPreference 생성
         pref = getSharedPreferences("login_shared", Context.MODE_PRIVATE);
-//        pref.edit().putBoolean("state", false).commit();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -41,13 +43,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //        actionbar = getSupportActionBar();
 //        actionbar.hide();
 
-        editID = (EditText)findViewById(R.id.id_input_login);
-        editPassword = (EditText)findViewById(R.id.password_input_login);
-        loginBtn = (Button)findViewById(R.id.login_btn);
-        signupBtn = (Button)findViewById(R.id.signup_btn);
+        editID = findViewById(R.id.id_input_login);
+        editPassword = findViewById(R.id.password_input_login);
+        loginBtn = findViewById(R.id.login_btn);
+        signupBtn = findViewById(R.id.signup_btn);
+        autoLogin = findViewById(R.id.auto_login_check);
 
-
-        ((LinearLayout)findViewById(R.id.login_thumbnail)).
+        findViewById(R.id.login_thumbnail).
                 startAnimation(AnimationUtils.loadAnimation(this, R.anim.fadein));
 
 
@@ -69,6 +71,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("onPause()", " LoginActivity");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("onStop()", " LoginActivity");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("onDestroy()", " LoginActivity");
+    }
+
+    @Override
     public void onClick(View v) {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.fadein);
         v.startAnimation(animation);
@@ -81,13 +101,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 ContentValues values = new ContentValues();
                 String id = editID.getText().toString();
                 String password = editPassword.getText().toString();
+                boolean autoChecked = autoLogin.isChecked();
 
                 values.put("id", id);
                 values.put("password", password);
 
 
-                NetworkLoginTask task = new NetworkLoginTask(this,
-                        loginUrl, values, new LoginData(id, password));
+                NetworkLoginTask task = new NetworkLoginTask(this, loginUrl, values,
+                        new SharedPreference(this, "login_shared", Context.MODE_PRIVATE),
+                        new LoginData(id, password, autoChecked));
                 task.execute();
 
             }break;

@@ -3,13 +3,10 @@ package com.hoingmarry.travelchat.network;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.hoingmarry.travelchat.R;
 import com.hoingmarry.travelchat.activity.ChatActivity;
-import com.hoingmarry.travelchat.activity.LoginActivity;
 import com.hoingmarry.travelchat.data.user.LoginData;
 import com.hoingmarry.travelchat.utils.SharedPreference;
 
@@ -24,17 +21,10 @@ public class NetworkLoginTask extends NetworkTask {
     private SharedPreference pref;
     private LoginData loginData;
 
-    public NetworkLoginTask(Context context, String url, ContentValues values) {
+    public NetworkLoginTask(Context context, String url, ContentValues values,
+                            SharedPreference pref, LoginData loginData) {
         super(context, url, values);
-        this.pref = new SharedPreference(context, "login_shared", Context.MODE_PRIVATE);
-        this.loginData = pref.getBoolean("state", false) ?
-                new LoginData(pref.getString("id", null),
-                pref.getString("password", null)) : null;
-    }
-
-    public NetworkLoginTask(Context context, String url, ContentValues values, LoginData loginData) {
-        super(context, url, values);
-        this.pref = new SharedPreference(context, "login_shared", Context.MODE_PRIVATE);
+        this.pref = pref;
         this.loginData = loginData;
     }
 
@@ -48,7 +38,8 @@ public class NetworkLoginTask extends NetworkTask {
             // 로그인 정보 확인 성공 시
             if(jsonMap.get("state").equals("OK")){
                 // 로그인 정보 저장
-                saveLoginData(context);
+                if(loginData.isAutoChecked())
+                    pref.saveLoginData(context, loginData);
 
                 Intent intent = new Intent(context, ChatActivity.class);
 
@@ -88,12 +79,6 @@ public class NetworkLoginTask extends NetworkTask {
         return data;
     }
 
-    private void saveLoginData(Context context){
-        if(!pref.getBoolean("state", false)){
-            pref.putBoolean("state", true);
-            pref.putString("id", loginData.getId());
-            pref.putString("password", loginData.getPassword());
-        }
-    }
+
 
 }

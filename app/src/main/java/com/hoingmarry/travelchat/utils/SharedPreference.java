@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.hoingmarry.travelchat.data.user.LoginData;
+
 
 public class SharedPreference {
     private SharedPreferences pref;
@@ -28,5 +30,13 @@ public class SharedPreference {
     }
     public String getString(String key, String defaultVal){
         return pref.getString(key, defaultVal);
+    }
+
+    public void saveLoginData(Context context, LoginData loginData){
+        if(!this.getBoolean("state", false)){
+            this.putBoolean("state", true);
+            this.putString("id", loginData.getId());
+            this.putString("password", loginData.getPassword());
+        }
     }
 }
