@@ -1,44 +1,22 @@
 package com.hoingmarry.travelchat.activity;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.webkit.CookieManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.hoingmarry.travelchat.R;
-import com.hoingmarry.travelchat.RequestHttpURLConnection;
-import com.hoingmarry.travelchat.adapter.MessageAdapter;
-import com.hoingmarry.travelchat.chat.Chat;
-import com.hoingmarry.travelchat.chat.ImageChat;
-import com.hoingmarry.travelchat.chat.MapChat;
-import com.hoingmarry.travelchat.utils.SharedPreference;
-
-import org.json.simple.JSONArray;
-import org.json.JSONException;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import static com.hoingmarry.travelchat.contracts.StringContract.MessageType.MSG_IMG_LEFT;
-import static com.hoingmarry.travelchat.contracts.StringContract.MessageType.MSG_LEFT;
-import static com.hoingmarry.travelchat.contracts.StringContract.MessageType.MSG_MAP_LEFT;
-
-import static com.hoingmarry.travelchat.contracts.StringContract.ResultCode.*;
+import com.hoingmarry.travelchat.data.user.LoginData;
+import com.hoingmarry.travelchat.network.NetworkLoginTask;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -50,12 +28,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private SharedPreferences pref;
 //    private ActionBar actionbar;
 
-    private final static String loginUrl = "http://192.168.0.147:30001/login";
+    private final static String loginUrl = "http://192.168.0.154:5000/login";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // SharedPreference 생성
-        pref = getSharedPreferences("login_info", 0);
-
+        pref = getSharedPreferences("login_shared", Context.MODE_PRIVATE);
+//        pref.edit().putBoolean("state", false).commit();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -77,15 +55,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         signupBtn.setOnClickListener(this);
 
         // SharedPreference 호출
-
-        if(pref.getBoolean("state", false)){
-            ContentValues values = new ContentValues();
-            values.put("id", pref.getString("id", null));
-            values.put("password", pref.getString("password", null));
-
-            NetworkLoginTask task = new NetworkLoginTask(loginUrl, values);
-            task.execute();
-        }
+//        if(pref.getBoolean("state", false)){
+//            Log.d("State True", "Log Confirm");
+//            ContentValues values = new ContentValues();
+//            values.put("id", pref.getString("id", null));
+//            values.put("password", pref.getString("password", null));
+//
+//            NetworkLoginTask task = new NetworkLoginTask(loginUrl, values);
+//            task.execute();
+//        }
 
 
     }
@@ -101,87 +79,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             {
                 // HttpUrlRequest에 담을 값
                 ContentValues values = new ContentValues();
-                values.put("id", editID.getText().toString());
-                values.put("password", editPassword.getText().toString());
+                String id = editID.getText().toString();
+                String password = editPassword.getText().toString();
+
+                values.put("id", id);
+                values.put("password", password);
 
 
-                NetworkLoginTask task = new NetworkLoginTask(loginUrl, values);
+                NetworkLoginTask task = new NetworkLoginTask(this,
+                        loginUrl, values, new LoginData(id, password));
                 task.execute();
-//                Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
-//
-//                intent.putExtra("nick", editID.getText().toString());
-//                intent.putExtra("cookie", editID.getText().toString());
-//                startActivity(intent);
+
             }break;
             case R.id.signup_btn:
             {
                 Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
                 startActivity(intent);
             }break;
-        }
-    }
-    public class NetworkLoginTask extends AsyncTask<Void, Void, String> {
-        private String url;
-        private ContentValues values;
-
-        public NetworkLoginTask(String url, ContentValues values) {
-            Log.d("Enter...", "Construct NetworkTask");
-            this.url = url;
-            this.values = values;
-        }
-
-        // 비동기 송수신 부분
-        @Override
-        protected String doInBackground(Void... params) {
-            Log.d("Enter...", "doInBackground");
-            String result;  // 요청 결과를 저장할 변수.
-            RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
-            result = requestHttpURLConnection.request(url, values); // 해당 URL로부터 결과물을 얻는다.
-
-            // 수신 받은 데이터 반환
-            return result;
-        }
-
-        // doInBackground 함수에서 받은 데이터로 로직 처리하는 부분
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            Log.d("Enter...", "onPostExecute");
-
-            try {
-                // JSon Data parsing
-                JSONParser jsonParser = new JSONParser();
-                JSONObject jsonObject = (JSONObject) (jsonParser.parse(s));
-                Log.d("JSON", jsonObject.toString());
-                String state = (String)jsonObject.get("state");
-                String nick = (String)jsonObject.get("nick");
-                String cookie = (String)jsonObject.get("cookie");
-
-                if (state.equals("OK"))
-                {
-                    if(!pref.getBoolean("state", false)){
-                        pref.edit().putBoolean("state", true);
-                        pref.edit().putString("id", editID.getText().toString());
-                        pref.edit().putString("password", editPassword.getText().toString());
-                    }
-                    Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
-
-                    intent.putExtra("nick", pref.getString("id", null));
-                    intent.putExtra("cookie", cookie);
-                    startActivity(intent);
-
-                }
-
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }catch(NullPointerException e){
-                Toast.makeText(getApplicationContext(), "ID / Password 를 확인해주세요", Toast.LENGTH_SHORT).show();
-
-            }
-
-            // doInBackground()로부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
-
         }
     }
 

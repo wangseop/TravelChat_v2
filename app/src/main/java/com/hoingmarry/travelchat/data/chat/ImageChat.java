@@ -1,4 +1,4 @@
-package com.hoingmarry.travelchat.chat;
+package com.hoingmarry.travelchat.data.chat;
 
 public class ImageChat extends Chat {
     private String imageUrl;

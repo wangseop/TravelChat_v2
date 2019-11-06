@@ -1,4 +1,4 @@
-package com.hoingmarry.travelchat.chat;
+package com.hoingmarry.travelchat.data.chat;
 
 public class ImageThumbChat extends ImageChat {
     private String imageComment;

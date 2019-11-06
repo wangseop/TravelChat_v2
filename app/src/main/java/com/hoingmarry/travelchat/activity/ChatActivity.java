@@ -1,9 +1,7 @@
 package com.hoingmarry.travelchat.activity;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,7 +15,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -30,20 +27,17 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.hoingmarry.travelchat.adapter.MessageAdapter;
-import com.hoingmarry.travelchat.chat.Chat;
+import com.hoingmarry.travelchat.data.chat.Chat;
 import com.hoingmarry.travelchat.R;
 import com.hoingmarry.travelchat.RequestHttpURLConnection;
-import com.hoingmarry.travelchat.chat.ImageChat;
-import com.hoingmarry.travelchat.chat.ImageThumbChat;
-import com.hoingmarry.travelchat.chat.MapChat;
-import com.hoingmarry.travelchat.fragment.ChatBoxFragment;
+import com.hoingmarry.travelchat.data.chat.ImageChat;
+import com.hoingmarry.travelchat.data.chat.MapChat;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -80,9 +74,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 //    private ActionBar actionbar;
 
 
-    private final String welcomePath = "http://192.168.0.147:30001/";
-    private final String messagePath = "http://192.168.0.147:30001/chatbot";
-    private String messageImgPath = "http://192.168.0.147:30001/img";
+    private final String welcomePath = "http://192.168.0.154:5000/";
+    private final String messagePath = "http://192.168.0.154:5000/chatbot";
+    private String messageImgPath = "http://192.168.0.154:5000/img";
     MessageAdapter messageAdapter;
     List<Chat> mchat;
     RecyclerView recyclerView;

@@ -1,4 +1,4 @@
-package com.hoingmarry.travelchat.chat;
+package com.hoingmarry.travelchat.data.chat;
 
 public class MapChat extends ImageChat {
     private double latitude;
