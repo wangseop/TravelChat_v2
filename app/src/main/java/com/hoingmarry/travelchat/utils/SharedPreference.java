@@ -32,11 +32,22 @@ public class SharedPreference {
         return pref.getString(key, defaultVal);
     }
 
+    public void DataClear(){
+        editor.remove("state").commit();
+        editor.remove("id").commit();
+        editor.remove("password").commit();
+    }
+
     public void saveLoginData(Context context, LoginData loginData){
         if(!this.getBoolean("state", false)){
             this.putBoolean("state", true);
             this.putString("id", loginData.getId());
             this.putString("password", loginData.getPassword());
         }
+    }
+
+    public void deleteLoginData(Context context, boolean isLogout){
+        if (isLogout)
+            DataClear();
     }
 }

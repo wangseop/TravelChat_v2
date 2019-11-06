@@ -1,6 +1,8 @@
 package com.hoingmarry.travelchat.activity;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +40,7 @@ import com.hoingmarry.travelchat.R;
 import com.hoingmarry.travelchat.RequestHttpURLConnection;
 import com.hoingmarry.travelchat.data.chat.ImageChat;
 import com.hoingmarry.travelchat.data.chat.MapChat;
+import com.hoingmarry.travelchat.utils.SharedPreference;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -70,6 +73,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     private EditText EditText_chat;
     private ImageButton Button_send;
     private RelativeLayout selectImgLayout;
+    private Toolbar mapActionbar;
 //    private FrameLayout inputLayout;
 //    private ActionBar actionbar;
 
@@ -95,20 +99,25 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chat);
 
         Intent intent = this.getIntent();
         nick = intent.getStringExtra("nick");
         cookie = intent.getStringExtra("cookie");
 
-//        // 액션바 비활성화
-//        actionbar = getSupportActionBar();
-//        actionbar.hide();
+        // 액션바
+        mapActionbar = (Toolbar)findViewById(R.id.chat_toolbar);
+
+        setSupportActionBar(mapActionbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Trigo");
+        // 액션바 뒤로가기 버튼 추가
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         // Manifest에 설정할 권한 부여
         ActivityCompat.requestPermissions(ChatActivity.this, new String[]{Manifest.permission.INTERNET}, 2);
         ActivityCompat.requestPermissions(ChatActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
 
-        setContentView(R.layout.activity_chat);
 
         // 문장 입력 바
         EditText_chat = findViewById(R.id.editText_chat);
@@ -185,11 +194,7 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
 
-    }
 
     @Override
     public void onStop() {
@@ -197,12 +202,36 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
+    }
     @Override
     public void onLowMemory() {
         super.onLowMemory();
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                Intent intent = new Intent(ChatActivity.this, LoginActivity.class);
+                intent.putExtra("logout", true);
+                new SharedPreference(this, "login_shared", Context.MODE_PRIVATE).DataClear();
+                startActivity(intent);
+                finish();
+
+                return true;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+
+
+    };
 
     // 클릭 리스너 재정의
     @Override

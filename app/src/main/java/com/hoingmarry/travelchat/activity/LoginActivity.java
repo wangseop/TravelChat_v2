@@ -27,15 +27,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText editPassword;
     private Button loginBtn;
     private Button signupBtn;
-    private SharedPreferences pref;
+    private SharedPreference pref;
     private CheckBox autoLogin;
 //    private ActionBar actionbar;
 
     private final static String loginUrl = "http://192.168.0.154:5000/login";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Intent intent = getIntent();
+        boolean logState = intent.getBooleanExtra("logout", false);
+
         // SharedPreference 생성
-        pref = getSharedPreferences("login_shared", Context.MODE_PRIVATE);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -49,12 +53,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         signupBtn = findViewById(R.id.signup_btn);
         autoLogin = findViewById(R.id.auto_login_check);
 
+
         findViewById(R.id.login_thumbnail).
                 startAnimation(AnimationUtils.loadAnimation(this, R.anim.fadein));
 
 
         loginBtn.setOnClickListener(this);
         signupBtn.setOnClickListener(this);
+
+        autoLogin.setChecked(logState);
 
         // SharedPreference 호출
 //        if(pref.getBoolean("state", false)){
@@ -80,6 +87,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onStop() {
         super.onStop();
         Log.d("onStop()", " LoginActivity");
+        finish();
     }
 
     @Override
@@ -120,5 +128,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }break;
         }
     }
+
+
 
 }
