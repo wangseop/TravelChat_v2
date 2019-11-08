@@ -167,6 +167,9 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
         // 쿠키 추가
         contentValues.put("cookie", cookie);
 
+        Log.d("Debug Output", nick);
+        Log.d("Debug Output", "welcom");
+        Log.d("Debug Output", cookie);
         // 입력 내용 비우기
         EditText_chat.setText("");
 

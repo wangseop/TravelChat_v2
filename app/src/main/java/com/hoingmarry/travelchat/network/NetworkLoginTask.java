@@ -45,7 +45,7 @@ public class NetworkLoginTask extends NetworkTask {
 
 //                    intent.putExtra("nick", pref.getString("id",null));
                 // 출력할 닉네임 전달(지금은 ID 사용)
-                intent.putExtra("nick", pref.getString("id", null));
+                intent.putExtra("nick", jsonMap.get("nick"));
                 // 쿠키값 전달
                 intent.putExtra("cookie", jsonMap.get("cookie"));
 

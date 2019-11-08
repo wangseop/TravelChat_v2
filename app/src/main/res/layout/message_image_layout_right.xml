@@ -40,7 +40,7 @@
             android:background="@drawable/message_text_background_right"
             android:padding="8dp"
             android:text="@string/messageSingleRight"
-            android:textColor="@color/defaultWhite"
+            android:textColor="@color/black"
             android:textSize="14sp" />
 
         <ImageView

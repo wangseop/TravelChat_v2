@@ -38,8 +38,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         editID = (EditText) findViewById(R.id.id_input_signup);
-        editPassword = (EditText) findViewById(R.id.password_confirm_input_signup);
-        editPasswordConfirm = (EditText) findViewById(R.id.password_input_signup);
+        editPassword = (EditText) findViewById(R.id.password_input_signup);
+        editPasswordConfirm = (EditText) findViewById(R.id.password_confirm_input_signup);
         signupBtn = (Button) findViewById(R.id.signup_request_btn);
         backBtn = (Button) findViewById(R.id.back_login_btn);
 
@@ -50,6 +50,26 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         signupBtn.setOnClickListener(this);
         backBtn.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("onPause()", " LoginActivity");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("onStop()", " LoginActivity");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("onDestroy()", " LoginActivity");
+//        finish();
+
     }
 
     @Override
@@ -83,7 +103,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.back_login_btn: {
                 Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                 startActivity(intent);
-                this.finish();
             }
             break;
         }

@@ -14,7 +14,8 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity android:name=".activity.PlaceLinkActivity"></activity>
-        <activity android:name=".activity.SignupActivity" />
+        <activity android:name=".activity.SignupActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.LoginActivity"
             android:windowSoftInputMode="adjustPan" />

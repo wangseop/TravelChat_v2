@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onStop() {
         super.onStop();
         Log.d("onStop()", " LoginActivity");
-        finish();
+//        finish();
     }
 
     @Override

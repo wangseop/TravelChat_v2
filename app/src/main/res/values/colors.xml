@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#D5E8F8</color>
-    <color name="colorPrimaryDark">#D5E8F8</color>
-    <color name="colorAccent">#D5E8F8</color>
+    <color name="colorPrimary">#80BDF0</color>
+    <color name="colorPrimaryDark">#80BDF0</color>
+    <color name="colorAccent">#80BDF0</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="gradientStart">#E1F8FA</color>
     <color name="gradientCenter">#E1F8FA</color>
     <color name="gradientEnd">#E1F8FA</color>
-    <color name="bottomBar">#E1F8FA</color>
+    <color name="bottomBar">#80BDF0</color>
     <color name="bottomBarLeft">#E1F8FA</color>
     <color name="bottomBarRight">#E1F8FA</color>
-    <color name="chatBackground">#D5E8F8</color>
+    <color name="chatBackground">#80BDF0</color>
 
     <color name="popupGallery">#AB47BC</color>
     <color name="attachmentBaseColor">#FAFAFA</color>
     <color name="chatLeftText">#FFFFFF</color>
-    <color name="messageSingleLeft">#AB47BC</color>
-    <color name="messageSingleRight">#FFA62E</color>
+    <color name="messageSingleLeft">#D3EDFD</color>
+    <color name="messageSingleRight">#F7B096</color>
     <color name="messageImageLeft">#FFB6F0</color>
     <color name="mapBtn">#ECE8D3</color>
-    <color name="messageImageThumbLeft">#FFD8F2</color>
-    <color name="messageImageThumbRight">#FFBF66</color>
+    <color name="messageImageThumbLeft">#BFE2F7</color>
+    <color name="messageImageThumbRight">#F7A080</color>
     <color name="defaultWhite">#FFFFFD</color>
 
     <color name="chattingColor">#e6e6e6</color>
