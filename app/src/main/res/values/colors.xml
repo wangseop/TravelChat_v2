@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="mainTitleColor">#ACCFEE</color>
     <color name="colorPrimary">#ACCFEE</color>
     <color name="colorPrimaryDark">#ACCFEE</color>
     <color name="colorAccent">#ACCFEE</color>

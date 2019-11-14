@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity{
 //    private ActionBar actionbar;
 
     private SharedPreference pref;
-    private final static String loginUrl = "http://192.168.0.154:30001/login";
+    private final static String loginUrl = "http://192.168.0.154:5000/login";
 
     protected void onCreate(Bundle savedInstanceState) {
 //        Log.d("Enter...", "MainActivity OnCreate");
